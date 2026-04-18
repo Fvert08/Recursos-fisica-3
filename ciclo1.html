@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Física 3 — Ciclo 1: Movimiento Oscilatorio</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>⚛ Física 3 — Fenómenos Físicos Interactivos</h1>
+    <p>Universidad Tecnológica de Pereira · Ciclo 1: Movimiento Oscilatorio</p>
+  </header>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="ciclo1.html" class="on">Ciclo 1: Movimiento Oscilatorio</a>
+    <span class="lk">🔒 Ciclo 2</span>
+    <span class="lk">🔒 Ciclo 3</span>
+    <span class="lk">🔒 Ciclo 4</span>
+  </nav>
+  <main>
+    <div class="cycle-intro">
+      <h2>Ciclo 1: Movimiento Oscilatorio</h2>
+      <p>Análisis de sistemas que exhiben oscilaciones periódicas alrededor de una posición de equilibrio estable. Modelados mediante la ecuación del <strong>Movimiento Armónico Simple (MAS)</strong>. Usa los sliders para modificar los parámetros y <strong>arrastra la masa o el péndulo</strong> en la simulación para establecer la condición inicial.</p>
+    </div>
+
+    <!-- EXP 1 -->
+    <article class="card">
+      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Sistema Masa-Resorte — Horizontal</h3><span class="ico" id="i1">▲</span></div>
+      <div class="cbody" id="b1">
+        <div class="egrid">
+          <div class="icol">
+            <div class="lbl">Descripción</div>
+            <p class="desc">Un bloque de masa <em>m</em> desliza sobre una superficie horizontal sin fricción, unido a un resorte de constante <em>k</em>. La <strong>Ley de Hooke</strong> (F = −kx) genera una fuerza restauradora proporcional al desplazamiento produciendo MAS. El período es independiente de la amplitud.</p>
+            <div class="lbl">Variables</div>
+            <table class="vt">
+              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
+              <tr><td class="vs">m</td><td>Masa del bloque</td><td>kg</td></tr>
+              <tr><td class="vs">k</td><td>Constante elástica del resorte</td><td>N/m</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud de oscilación</td><td>m</td></tr>
+              <tr><td class="vs">x(t)</td><td>Posición en el tiempo</td><td>m</td></tr>
+              <tr><td class="vs">ω</td><td>Frecuencia angular natural</td><td>rad/s</td></tr>
+              <tr><td class="vs">T</td><td>Período</td><td>s</td></tr>
+              <tr><td class="vs">f</td><td>Frecuencia</td><td>Hz</td></tr>
+            </table>
+            <div class="lbl">Fórmulas</div>
+            <div class="fb"><div class="fn">Ecuación de movimiento</div><div class="fe">x(t) = A · cos(ωt)</div><div class="fd">Posición del bloque como función del tiempo, partiendo desde el desplazamiento máximo</div></div>
+            <div class="fb"><div class="fn">Frecuencia angular natural</div><div class="fe">ω = √(k / m)</div><div class="fd">Mayor k o menor m → mayor ω → oscilación más rápida</div></div>
+            <div class="fb"><div class="fn">Período de oscilación</div><div class="fe">T = 2π / ω = 2π · √(m / k)</div><div class="fd">Tiempo para completar un ciclo completo; independiente de A</div></div>
+            <div class="fb"><div class="fn">Energía mecánica total (conservada)</div><div class="fe">E = ½ k A²</div><div class="fd">Constante durante el movimiento sin fricción; se distribuye entre Ec y Ep</div></div>
+          </div>
+          <div class="scol">
+            <div class="lbl">Simulación — arrastra el bloque para fijar condición inicial</div>
+            <canvas id="cv1" height="175"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb1">▶ Iniciar</button><button class="btn brs" id="br1">↺ Reiniciar</button></div>
+            <div class="sls">
+              <label>m</label><input type="range" id="s1m" min="0.1" max="5" step="0.1" value="1"><span class="sv" id="d1m">1.0 kg</span>
+              <label>k</label><input type="range" id="s1k" min="5" max="100" step="1" value="20"><span class="sv" id="d1k">20 N/m</span>
+              <label>A</label><input type="range" id="s1A" min="0.05" max="0.35" step="0.01" value="0.15"><span class="sv" id="d1A">0.15 m</span>
+            </div>
+            <div class="rdout">
+              <div class="ri"><div class="rl">x(t)</div><div class="rv" id="r1x">0.1500 m</div></div>
+              <div class="ri"><div class="rl">v(t)</div><div class="rv" id="r1v">0.0000 m/s</div></div>
+              <div class="ri"><div class="rl">a(t)</div><div class="rv" id="r1a">0.0000 m/s²</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl1"></div></div>
+      </div>
+    </article>
+
+    <!-- EXP 2 -->
+    <article class="card">
+      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Sistema Masa-Resorte — Vertical</h3><span class="ico" id="i2">▲</span></div>
+      <div class="cbody" id="b2">
+        <div class="egrid">
+          <div class="icol">
+            <div class="lbl">Descripción</div>
+            <p class="desc">Una masa <em>m</em> cuelga de un resorte de constante <em>k</em> fijo al techo. La gravedad produce una elongación estática <em>δ = mg/k</em>. Medida desde este nuevo equilibrio, la masa oscila con la <strong>misma ω que el caso horizontal</strong>. La gravedad solo desplaza el punto de equilibrio, sin cambiar la frecuencia.</p>
+            <div class="lbl">Variables</div>
+            <table class="vt">
+              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
+              <tr><td class="vs">m</td><td>Masa del bloque</td><td>kg</td></tr>
+              <tr><td class="vs">k</td><td>Constante elástica</td><td>N/m</td></tr>
+              <tr><td class="vs">g</td><td>Gravedad (9.8)</td><td>m/s²</td></tr>
+              <tr><td class="vs">δ</td><td>Elongación estática de equilibrio</td><td>m</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud (desde equilibrio)</td><td>m</td></tr>
+              <tr><td class="vs">y(t)</td><td>Desplazamiento desde equilibrio</td><td>m</td></tr>
+            </table>
+            <div class="lbl">Fórmulas</div>
+            <div class="fb"><div class="fn">Elongación estática de equilibrio</div><div class="fe">δ = mg / k</div><div class="fd">Estiramiento del resorte cuando el sistema está en reposo</div></div>
+            <div class="fb"><div class="fn">Ecuación de movimiento (medida desde equilibrio)</div><div class="fe">y(t) = A · cos(ωt)</div><div class="fd">La gravedad no aparece porque y se mide desde el nuevo equilibrio</div></div>
+            <div class="fb"><div class="fn">Frecuencia angular</div><div class="fe">ω = √(k / m)</div><div class="fd">Idéntica al caso horizontal — g no interviene en ω</div></div>
+            <div class="fb"><div class="fn">Período</div><div class="fe">T = 2π · √(m / k)</div><div class="fd">Independiente de g y de la elongación estática δ</div></div>
+          </div>
+          <div class="scol">
+            <div class="lbl">Simulación — arrastra el bloque verticalmente</div>
+            <canvas id="cv2" height="245"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb2">▶ Iniciar</button><button class="btn brs" id="br2">↺ Reiniciar</button></div>
+            <div class="sls">
+              <label>m</label><input type="range" id="s2m" min="0.1" max="3" step="0.1" value="1"><span class="sv" id="d2m">1.0 kg</span>
+              <label>k</label><input type="range" id="s2k" min="10" max="100" step="5" value="20"><span class="sv" id="d2k">20 N/m</span>
+              <label>A</label><input type="range" id="s2A" min="0.02" max="0.12" step="0.01" value="0.08"><span class="sv" id="d2A">0.08 m</span>
+            </div>
+            <div class="rdout">
+              <div class="ri"><div class="rl">y(t)</div><div class="rv" id="r2y">0.0800 m</div></div>
+              <div class="ri"><div class="rl">v(t)</div><div class="rv" id="r2v">0.0000 m/s</div></div>
+              <div class="ri"><div class="rl">δ</div><div class="rv" id="r2d">0.4900 m</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl2"></div></div>
+      </div>
+    </article>
+
+    <!-- EXP 3 -->
+    <article class="card">
+      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Sistema Péndulo Simple</h3><span class="ico" id="i3">▲</span></div>
+      <div class="cbody" id="b3">
+        <div class="egrid">
+          <div class="icol">
+            <div class="lbl">Descripción</div>
+            <p class="desc">Masa puntual suspendida de un hilo inextensible de longitud <em>L</em>. Para <strong>ángulos pequeños (θ₀ &lt; 15°)</strong>, sin(θ) ≈ θ y el movimiento aproxima un MAS. El período es <strong>independiente de m y de A</strong> — fenómeno llamado <em>isocronismo</em>. La simulación usa integración numérica exacta (RK4).</p>
+            <div class="lbl">Variables</div>
+            <table class="vt">
+              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
+              <tr><td class="vs">L</td><td>Longitud del hilo</td><td>m</td></tr>
+              <tr><td class="vs">m</td><td>Masa del bob</td><td>kg</td></tr>
+              <tr><td class="vs">θ₀</td><td>Ángulo inicial (amplitud)</td><td>°</td></tr>
+              <tr><td class="vs">θ(t)</td><td>Ángulo instantáneo</td><td>rad</td></tr>
+              <tr><td class="vs">ω₀</td><td>Frecuencia angular natural</td><td>rad/s</td></tr>
+              <tr><td class="vs">T</td><td>Período</td><td>s</td></tr>
+            </table>
+            <div class="lbl">Fórmulas</div>
+            <div class="fb"><div class="fn">Ecuación (aproximación ángulos pequeños)</div><div class="fe">θ(t) = θ₀ · cos(ω₀t)</div><div class="fd">Válida para θ₀ &lt; 15°; la simulación resuelve la ecuación exacta</div></div>
+            <div class="fb"><div class="fn">Frecuencia angular natural</div><div class="fe">ω₀ = √(g / L)</div><div class="fd">Solo depende de L y g; la masa m no influye</div></div>
+            <div class="fb"><div class="fn">Período</div><div class="fe">T = 2π · √(L / g)</div><div class="fd">Isocronismo: T independiente de m y θ₀ (ángulos pequeños)</div></div>
+            <div class="fb"><div class="fn">Velocidad máxima (al pasar por vertical)</div><div class="fe">v_max = θ₀ · √(gL)</div><div class="fd">θ₀ debe expresarse en radianes</div></div>
+          </div>
+          <div class="scol">
+            <div class="lbl">Simulación — arrastra el bob para fijar ángulo inicial</div>
+            <canvas id="cv3" height="265"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb3">▶ Iniciar</button><button class="btn brs" id="br3">↺ Reiniciar</button></div>
+            <div class="sls">
+              <label>L</label><input type="range" id="s3L" min="0.2" max="2" step="0.05" value="1"><span class="sv" id="d3L">1.00 m</span>
+              <label>m</label><input type="range" id="s3m" min="0.1" max="3" step="0.1" value="1"><span class="sv" id="d3m">1.0 kg</span>
+              <label>θ₀</label><input type="range" id="s3t" min="3" max="45" step="1" value="15"><span class="sv" id="d3t">15°</span>
+            </div>
+            <div class="rdout">
+              <div class="ri"><div class="rl">θ(t)</div><div class="rv" id="r3t">15.00°</div></div>
+              <div class="ri"><div class="rl">ω(t)</div><div class="rv" id="r3w">0.0000 r/s</div></div>
+              <div class="ri"><div class="rl">v(t)</div><div class="rv" id="r3v">0.0000 m/s</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl3"></div></div>
+      </div>
+    </article>
+
+    <!-- EXP 4 -->
+    <article class="card">
+      <div class="chdr" onclick="tog(4)"><div class="cnum">4</div><h3>Sistema Péndulo Físico (Varilla Uniforme)</h3><span class="ico" id="i4">▲</span></div>
+      <div class="cbody" id="b4">
+        <div class="egrid">
+          <div class="icol">
+            <div class="lbl">Descripción</div>
+            <p class="desc">Varilla rígida uniforme de masa <em>m</em> y longitud <em>L</em>, pivotada en un extremo. A diferencia del péndulo simple, el período depende del <strong>momento de inercia I</strong> respecto al pivote y de la distancia <em>d</em> del pivote al CM. Equivale a un péndulo simple de longitud <em>L_eq = 2L/3</em>.</p>
+            <div class="lbl">Variables</div>
+            <table class="vt">
+              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
+              <tr><td class="vs">m</td><td>Masa de la varilla</td><td>kg</td></tr>
+              <tr><td class="vs">L</td><td>Longitud de la varilla</td><td>m</td></tr>
+              <tr><td class="vs">I</td><td>Momento de inercia (eje en extremo)</td><td>kg·m²</td></tr>
+              <tr><td class="vs">d</td><td>Distancia pivote → CM</td><td>m</td></tr>
+              <tr><td class="vs">θ₀</td><td>Ángulo inicial</td><td>°</td></tr>
+              <tr><td class="vs">T</td><td>Período</td><td>s</td></tr>
+            </table>
+            <div class="lbl">Fórmulas</div>
+            <div class="fb"><div class="fn">Momento de inercia (varilla, eje en extremo)</div><div class="fe">I = (1/3) m L²</div><div class="fd">Derivado del teorema de Steiner: I_cm + md² = mL²/12 + m(L/2)²</div></div>
+            <div class="fb"><div class="fn">Distancia pivote → CM</div><div class="fe">d = L / 2</div><div class="fd">El CM de una varilla uniforme está en su punto medio geométrico</div></div>
+            <div class="fb"><div class="fn">Período general del péndulo físico</div><div class="fe">T = 2π · √(I / mgd)</div><div class="fd">Válido para cualquier cuerpo rígido que oscila en torno a un eje fijo</div></div>
+            <div class="fb"><div class="fn">Período simplificado (varilla uniforme)</div><div class="fe">T = 2π · √(2L / 3g)</div><div class="fd">Equivale a péndulo simple de longitud equivalente L_eq = 2L/3</div></div>
+          </div>
+          <div class="scol">
+            <div class="lbl">Simulación — arrastra el extremo de la varilla</div>
+            <canvas id="cv4" height="285"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb4">▶ Iniciar</button><button class="btn brs" id="br4">↺ Reiniciar</button></div>
+            <div class="sls">
+              <label>L</label><input type="range" id="s4L" min="0.2" max="2" step="0.05" value="1"><span class="sv" id="d4L">1.00 m</span>
+              <label>m</label><input type="range" id="s4m" min="0.1" max="5" step="0.1" value="1"><span class="sv" id="d4m">1.0 kg</span>
+              <label>θ₀</label><input type="range" id="s4t" min="3" max="45" step="1" value="15"><span class="sv" id="d4t">15°</span>
+            </div>
+            <div class="rdout">
+              <div class="ri"><div class="rl">θ(t)</div><div class="rv" id="r4t">15.00°</div></div>
+              <div class="ri"><div class="rl">I</div><div class="rv" id="r4I">0.3333 kg·m²</div></div>
+              <div class="ri"><div class="rl">T</div><div class="rv" id="r4T">— s</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl4"></div></div>
+      </div>
+    </article>
+  </main>
+  <footer>Física 3 — Experimentos Interactivos · Universidad Tecnológica de Pereira · 2026</footer>
+
+  <!-- Scripts: orden obligatorio -->
+  <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/sim1.js"></script>
+  <script src="js/sim2.js"></script>
+  <script src="js/sim3.js"></script>
+  <script src="js/sim4.js"></script>
+</body>
+</html>
