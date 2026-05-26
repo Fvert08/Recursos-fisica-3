@@ -1,0 +1,13 @@
+'use strict';
+(function(){const cv=document.getElementById('cv3'); if(!cv) return; const ctx=cv.getContext('2d'); let n1=1,n2=1.5,t1=30;
+const t2=()=>Math.asin(Math.min(1,(n1/n2)*Math.sin(t1*Math.PI/180)))*180/Math.PI; const tc=()=> n1>n2?Math.asin(n2/n1)*180/Math.PI:null;
+function draw(){const W=cv.width,H=cv.height; bgd(ctx,W,H); const mx=W/2,my=H/2; ctx.strokeStyle='#90caf9';ctx.beginPath();ctx.moveTo(20,my);ctx.lineTo(W-20,my);ctx.stroke(); ctx.strokeStyle='rgba(255,255,255,.3)';ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(mx,20);ctx.lineTo(mx,H-20);ctx.stroke();ctx.setLineDash([]);
+const a=t1*Math.PI/180, x1=mx-130*Math.sin(a),y1=my-130*Math.cos(a); ctx.strokeStyle='#ff5252';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(mx,my);ctx.stroke();
+const crit=tc(); if(!(crit && t1>crit)){const b=t2()*Math.PI/180; const x2=mx+130*Math.sin(b),y2=my+130*Math.cos(b); ctx.strokeStyle='#69f0ae';ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(x2,y2);ctx.stroke();} else {const xr=mx+130*Math.sin(a),yr=my-130*Math.cos(a);ctx.strokeStyle='#4fc3f7';ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(xr,yr);ctx.stroke();}
+ document.getElementById('r3a').textContent=t1.toFixed(2)+'°'; document.getElementById('r3b').textContent=(isNaN(t2())?'—':t2().toFixed(2)+'°'); document.getElementById('r3c').textContent=(crit?crit.toFixed(2)+'°':'—');}
+function upd(){const v1=3e8/n1,v2=3e8/n2; document.getElementById('cl3').innerHTML=chHTML([{f:'n₁ sinθ₁',v:(n1*Math.sin(t1*Math.PI/180)).toFixed(4),u:'—'},{f:'n₂ sinθ₂',v:(n2*Math.sin((isNaN(t2())?90:t2())*Math.PI/180)).toFixed(4),u:'—'},{f:'v₁=c/n₁',v:(v1/1e8).toFixed(3),u:'×10⁸ m/s'},{f:'v₂=c/n₂',v:(v2/1e8).toFixed(3),u:'×10⁸ m/s'}]);}
+function init(){cv.width=cv.parentElement.clientWidth||460;draw();upd();}
+['n1','n2','t'].forEach(k=>document.getElementById('s3'+k).oninput=e=>{if(k==='n1'){n1=+e.target.value;document.getElementById('d3n1').textContent=n1.toFixed(2);} if(k==='n2'){n2=+e.target.value;document.getElementById('d3n2').textContent=n2.toFixed(2);} if(k==='t'){t1=+e.target.value;document.getElementById('d3t').textContent=t1+'°';} draw();upd();});
+document.getElementById('bb3').onclick=()=>{t1=(t1+5)%90;document.getElementById('s3t').value=t1;document.getElementById('d3t').textContent=t1+'°';draw();upd();};
+document.getElementById('br3').onclick=()=>{n1=1;n2=1.5;t1=30;document.getElementById('s3n1').value=1;document.getElementById('s3n2').value=1.5;document.getElementById('s3t').value=30;document.getElementById('d3n1').textContent='1.00';document.getElementById('d3n2').textContent='1.50';document.getElementById('d3t').textContent='30°';draw();upd();};
+window.simInits[2]=init; init();})();

@@ -48,10 +48,18 @@
             <div class="fb"><div class="fn">Aumento lateral</div><div class="fe">m = hᵢ / h₀ = +1</div><div class="fd">La imagen conserva tamaño y orientación vertical</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Ubica un objeto frente a un espejo plano y traza dos rayos desde su extremo superior: uno perpendicular al espejo y otro oblicuo. Refleja ambos aplicando θᵢ = θᵣ y prolonga los rayos reflejados hacia atrás para localizar la imagen virtual.</p>
+            <div class="lbl">Simulación — reflexión en espejo plano</div>
+            <canvas id="cv1" height="220"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb1">▶ Iniciar</button><button class="btn brs" id="br1">↺ Reiniciar</button></div>
+            <div class="sls">
+              <label>d₀</label><input type="range" id="s1d" min="0.5" max="4" step="0.1" value="2"><span class="sv" id="d1d">2.0 m</span>
+              <label>h₀</label><input type="range" id="s1h" min="0.4" max="2" step="0.1" value="1"><span class="sv" id="d1h">1.0 m</span>
+              <label>θᵢ</label><input type="range" id="s1t" min="5" max="75" step="1" value="35"><span class="sv" id="d1t">35°</span>
+            </div>
+            <div class="rdout"><div class="ri"><div class="rl">θᵢ</div><div class="rv" id="r1a">35.00°</div></div><div class="ri"><div class="rl">θᵣ</div><div class="rv" id="r1b">35.00°</div></div><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r1c">2.00 m</div></div></div>
           </div>
         </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl1"></div></div>
       </div>
     </article>
 
@@ -78,10 +86,14 @@
             <div class="fb"><div class="fn">Aumento</div><div class="fe">m = hᵢ/h₀ = -dᵢ/d₀</div><div class="fd">El signo define orientación (invertida o derecha)</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Mueve el objeto respecto al foco y al centro de curvatura en un espejo cóncavo. Observa cuándo la imagen es real/invertida o virtual/derecha. Repite con espejo convexo para verificar que la imagen es siempre virtual, derecha y reducida.</p>
+            <div class="lbl">Simulación — espejos esféricos</div>
+            <canvas id="cv2" height="220"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb2">↔ Cambiar a Convexo</button><button class="btn brs" id="br2">↺ Reiniciar</button></div>
+            <div class="sls"><label>f</label><input type="range" id="s2f" min="0.3" max="2" step="0.1" value="1"><span class="sv" id="d2f">1.0 m</span><label>d₀</label><input type="range" id="s2d" min="0.4" max="4" step="0.1" value="2"><span class="sv" id="d2d">2.0 m</span><label>h₀</label><input type="range" id="s2h" min="0.4" max="2" step="0.1" value="1"><span class="sv" id="d2h">1.0 m</span></div>
+            <div class="rdout"><div class="ri"><div class="rl">f</div><div class="rv" id="r2a">1.00 m</div></div><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r2b">2.00 m</div></div><div class="ri"><div class="rl">m</div><div class="rv" id="r2c">-1.00</div></div></div>
           </div>
         </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl2"></div></div>
       </div>
     </article>
 
@@ -108,10 +120,14 @@
             <div class="fb"><div class="fn">Ángulo crítico (si n₁ &gt; n₂)</div><div class="fe">sin(θc) = n₂ / n₁</div><div class="fd">Para θ₁ &gt; θc se presenta reflexión total interna</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Selecciona dos medios (por ejemplo aire-agua o vidrio-aire) y varía θ₁. Comprueba cómo cambia θ₂ y detecta el ángulo crítico cuando el rayo refractado se vuelve tangente a la frontera.</p>
+            <div class="lbl">Simulación — refracción (Snell)</div>
+            <canvas id="cv3" height="220"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb3">+5°</button><button class="btn brs" id="br3">↺ Reiniciar</button></div>
+            <div class="sls"><label>n₁</label><input type="range" id="s3n1" min="1" max="2" step="0.01" value="1"><span class="sv" id="d3n1">1.00</span><label>n₂</label><input type="range" id="s3n2" min="1" max="2" step="0.01" value="1.5"><span class="sv" id="d3n2">1.50</span><label>θ₁</label><input type="range" id="s3t" min="0" max="89" step="1" value="30"><span class="sv" id="d3t">30°</span></div>
+            <div class="rdout"><div class="ri"><div class="rl">θ₁</div><div class="rv" id="r3a">30.00°</div></div><div class="ri"><div class="rl">θ₂</div><div class="rv" id="r3b">19.47°</div></div><div class="ri"><div class="rl">θc</div><div class="rv" id="r3c">—</div></div></div>
           </div>
         </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl3"></div></div>
       </div>
     </article>
 
@@ -138,10 +154,14 @@
             <div class="fb"><div class="fn">Potencia óptica</div><div class="fe">P = 1/f</div><div class="fd">f en metros; P positiva para convergentes y negativa para divergentes</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Desplaza el objeto respecto a una lente convergente y observa los cambios de tamaño/posición de imagen al pasar por f y 2f. Luego cambia a lente divergente y verifica que la imagen es virtual, derecha y menor para cualquier d₀.</p>
+            <div class="lbl">Simulación — lentes delgadas</div>
+            <canvas id="cv4" height="220"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb4">↔ Cambiar a Divergente</button><button class="btn brs" id="br4">↺ Reiniciar</button></div>
+            <div class="sls"><label>f</label><input type="range" id="s4f" min="0.3" max="2" step="0.1" value="1"><span class="sv" id="d4f">1.0 m</span><label>d₀</label><input type="range" id="s4d" min="0.4" max="4" step="0.1" value="2"><span class="sv" id="d4d">2.0 m</span><label>h₀</label><input type="range" id="s4h" min="0.4" max="2" step="0.1" value="1"><span class="sv" id="d4h">1.0 m</span></div>
+            <div class="rdout"><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r4a">2.00 m</div></div><div class="ri"><div class="rl">m</div><div class="rv" id="r4b">-1.00</div></div><div class="ri"><div class="rl">P</div><div class="rv" id="r4c">1.00 D</div></div></div>
           </div>
         </div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl4"></div></div>
       </div>
     </article>
   </main>
@@ -150,5 +170,9 @@
 
   <script src="js/utils.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/sim21.js"></script>
+  <script src="js/sim22.js"></script>
+  <script src="js/sim23.js"></script>
+  <script src="js/sim24.js"></script>
 </body>
 </html>
