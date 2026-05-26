@@ -1,154 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Física 3 — Ciclo 2: Óptica Geométrica</title>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <header>
-    <h1>⚛ Física 3 — Fenómenos Físicos Interactivos</h1>
-    <p>Universidad Tecnológica de Pereira · Ciclo 2: Óptica Geométrica</p>
-  </header>
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="ciclo1.html">Ciclo 1: Movimiento Oscilatorio</a>
-    <a href="ciclo2.html" class="on">Ciclo 2: Óptica Geométrica</a>
-    <span class="lk">🔒 Ciclo 3</span>
-    <span class="lk">🔒 Ciclo 4</span>
-  </nav>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Física 3 — Ciclo 2: Óptica Geométrica</title><link rel="stylesheet" href="css/styles.css"></head><body>
+<header><h1>⚛ Física 3 — Fenómenos Físicos Interactivos</h1><p>Universidad Tecnológica de Pereira · Ciclo 2: Óptica Geométrica</p></header>
+<nav><a href="index.html">Inicio</a><a href="ciclo1.html">Ciclo 1: Movimiento Oscilatorio</a><a href="ciclo2.html" class="on">Ciclo 2: Óptica Geométrica</a><span class="lk">🔒 Ciclo 3</span><span class="lk">🔒 Ciclo 4</span></nav>
+<main>
+<div class="cycle-intro"><h2>Ciclo 2: Óptica Geométrica</h2><p>Estudio del comportamiento de la luz mediante el modelo de rayos. Ajusta parámetros y analiza resultados numéricos en tiempo real.</p></div>
 
-  <main>
-    <div class="cycle-intro">
-      <h2>Ciclo 2: Óptica Geométrica</h2>
-      <p>Estudio del comportamiento de la luz mediante el modelo de rayos. En este ciclo se analizan fenómenos de <strong>reflexión, refracción y formación de imágenes</strong> en espejos y lentes delgadas. Cada sistema incluye variables, ecuaciones clave y guía de simulación para experimentar con parámetros.</p>
-    </div>
+<article class="card"><div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Reflexión en Espejo Plano</h3><span class="ico" id="i1">▲</span></div><div class="cbody" id="b1"><div class="egrid"><div class="icol"><div class="lbl">Descripción</div><p class="desc">Imagen virtual y derecha con θᵢ=θᵣ y dᵢ=d₀.</p></div><div class="scol"><div class="lbl">Simulación</div><canvas id="cv1" height="210"></canvas><div class="ctrls"><button class="btn bgo" id="bb1">▶ Iniciar</button><button class="btn brs" id="br1">↺ Reiniciar</button></div><div class="sls"><label>θᵢ</label><input id="s1t" type="range" min="5" max="80" value="35"><span class="sv" id="d1t">35°</span><label>d₀</label><input id="s1d" type="range" min="0.5" max="2" step="0.05" value="1.2"><span class="sv" id="d1d">1.20 m</span><label>h₀</label><input id="s1h" type="range" min="0.4" max="1.8" step="0.05" value="1"><span class="sv" id="d1h">1.00 m</span></div><div class="rdout"><div class="ri"><div class="rl">θᵢ</div><div class="rv" id="r1ti">35°</div></div><div class="ri"><div class="rl">θᵣ</div><div class="rv" id="r1tr">35°</div></div><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r1di">1.20 m</div></div></div></div></div><div class="calc"><div class="cttl">⚡ Calculadora</div><div class="cgrid" id="cl1"></div></div></div></article>
 
-    <article class="card">
-      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Reflexión en Espejo Plano</h3><span class="ico" id="i1">▲</span></div>
-      <div class="cbody" id="b1">
-        <div class="egrid">
-          <div class="icol">
-            <div class="lbl">Descripción</div>
-            <p class="desc">Un espejo plano produce una imagen virtual, derecha y de igual tamaño que el objeto. La ley fundamental es que el ángulo de incidencia es igual al ángulo de reflexión, medidos respecto a la normal de la superficie.</p>
-            <div class="lbl">Variables</div>
-            <table class="vt">
-              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">θᵢ</td><td>Ángulo de incidencia</td><td>°</td></tr>
-              <tr><td class="vs">θᵣ</td><td>Ángulo de reflexión</td><td>°</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto-espejo</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen-espejo</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">hᵢ</td><td>Altura de la imagen</td><td>m</td></tr>
-            </table>
-            <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ley de reflexión</div><div class="fe">θᵢ = θᵣ</div><div class="fd">Todo rayo incidente se refleja con igual ángulo respecto a la normal</div></div>
-            <div class="fb"><div class="fn">Posición de imagen en espejo plano</div><div class="fe">dᵢ = d₀</div><div class="fd">La imagen se forma detrás del espejo a igual distancia que el objeto</div></div>
-            <div class="fb"><div class="fn">Aumento lateral</div><div class="fe">m = hᵢ / h₀ = +1</div><div class="fd">La imagen conserva tamaño y orientación vertical</div></div>
-          </div>
-          <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Ubica un objeto frente a un espejo plano y traza dos rayos desde su extremo superior: uno perpendicular al espejo y otro oblicuo. Refleja ambos aplicando θᵢ = θᵣ y prolonga los rayos reflejados hacia atrás para localizar la imagen virtual.</p>
-          </div>
-        </div>
-      </div>
-    </article>
+<article class="card"><div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Espejos Esféricos</h3><span class="ico" id="i2">▲</span></div><div class="cbody" id="b2"><div class="egrid"><div class="icol"><div class="lbl">Descripción</div><p class="desc">Ecuación del espejo: 1/f=1/d₀+1/dᵢ.</p></div><div class="scol"><div class="lbl">Simulación</div><canvas id="cv2" height="210"></canvas><div class="ctrls"><button class="btn bgo" id="bb2">▶ Iniciar</button><button class="btn brs" id="br2">↺ Reiniciar</button></div><div class="sls"><label>f</label><input id="s2f" type="range" min="0.3" max="2" step="0.05" value="1"><span class="sv" id="d2f">1.00 m</span><label>d₀</label><input id="s2d" type="range" min="0.4" max="4" step="0.05" value="2.5"><span class="sv" id="d2d">2.50 m</span><label>h₀</label><input id="s2h" type="range" min="0.4" max="1.8" step="0.05" value="1"><span class="sv" id="d2h">1.00 m</span><label>tipo</label><select id="s2t"><option value="concavo">concavo</option><option value="convexo">convexo</option></select><span class="sv" id="d2t">concavo</span></div><div class="rdout"><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r2di">—</div></div><div class="ri"><div class="rl">m</div><div class="rv" id="r2m">—</div></div><div class="ri"><div class="rl">tipo img</div><div class="rv" id="r2ti">—</div></div></div></div></div><div class="calc"><div class="cttl">⚡ Calculadora</div><div class="cgrid" id="cl2"></div></div></div></article>
 
-    <article class="card">
-      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Espejos Esféricos (Cóncavo y Convexo)</h3><span class="ico" id="i2">▲</span></div>
-      <div class="cbody" id="b2">
-        <div class="egrid">
-          <div class="icol">
-            <div class="lbl">Descripción</div>
-            <p class="desc">Los espejos esféricos forman imágenes reales o virtuales según la posición del objeto con respecto al foco. El espejo cóncavo puede converger rayos y el convexo siempre diverge rayos.</p>
-            <div class="lbl">Variables</div>
-            <table class="vt">
-              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">f</td><td>Distancia focal</td><td>m</td></tr>
-              <tr><td class="vs">R</td><td>Radio de curvatura</td><td>m</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">hᵢ</td><td>Altura de la imagen</td><td>m</td></tr>
-            </table>
-            <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación del espejo</div><div class="fe">1/f = 1/d₀ + 1/dᵢ</div><div class="fd">Relación principal para ubicar la imagen</div></div>
-            <div class="fb"><div class="fn">Relación foco-radio</div><div class="fe">f = R/2</div><div class="fd">Válida para espejos esféricos en aproximación paraxial</div></div>
-            <div class="fb"><div class="fn">Aumento</div><div class="fe">m = hᵢ/h₀ = -dᵢ/d₀</div><div class="fd">El signo define orientación (invertida o derecha)</div></div>
-          </div>
-          <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Mueve el objeto respecto al foco y al centro de curvatura en un espejo cóncavo. Observa cuándo la imagen es real/invertida o virtual/derecha. Repite con espejo convexo para verificar que la imagen es siempre virtual, derecha y reducida.</p>
-          </div>
-        </div>
-      </div>
-    </article>
+<article class="card"><div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Refracción (Ley de Snell)</h3><span class="ico" id="i3">▲</span></div><div class="cbody" id="b3"><div class="egrid"><div class="icol"><div class="lbl">Descripción</div><p class="desc">n₁sinθ₁=n₂sinθ₂ y reflexión total interna cuando θ₁&gt;θc.</p></div><div class="scol"><div class="lbl">Simulación</div><canvas id="cv3" height="230"></canvas><div class="ctrls"><button class="btn bgo" id="bb3">▶ Iniciar</button><button class="btn brs" id="br3">↺ Reiniciar</button></div><div class="sls"><label>n₁</label><input id="s3n1" type="range" min="1" max="2" step="0.01" value="1"><span class="sv" id="d3n1">1.00</span><label>n₂</label><input id="s3n2" type="range" min="1" max="2" step="0.01" value="1.33"><span class="sv" id="d3n2">1.33</span><label>θ₁</label><input id="s3t" type="range" min="0" max="89" value="35"><span class="sv" id="d3t">35°</span></div><div class="rdout"><div class="ri"><div class="rl">θ₂</div><div class="rv" id="r3t2">—</div></div><div class="ri"><div class="rl">θc</div><div class="rv" id="r3tc">—</div></div><div class="ri"><div class="rl">Estado</div><div class="rv" id="r3st">—</div></div></div></div></div><div class="calc"><div class="cttl">⚡ Calculadora</div><div class="cgrid" id="cl3"></div></div></div></article>
 
-    <article class="card">
-      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Refracción en Frontera Plana (Ley de Snell)</h3><span class="ico" id="i3">▲</span></div>
-      <div class="cbody" id="b3">
-        <div class="egrid">
-          <div class="icol">
-            <div class="lbl">Descripción</div>
-            <p class="desc">Cuando la luz pasa de un medio a otro con diferente índice de refracción, cambia su dirección y velocidad. Este comportamiento se modela con la Ley de Snell y permite estudiar fenómenos como refracción total interna.</p>
-            <div class="lbl">Variables</div>
-            <table class="vt">
-              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">n₁</td><td>Índice del medio incidente</td><td>—</td></tr>
-              <tr><td class="vs">n₂</td><td>Índice del medio refractado</td><td>—</td></tr>
-              <tr><td class="vs">θ₁</td><td>Ángulo de incidencia</td><td>°</td></tr>
-              <tr><td class="vs">θ₂</td><td>Ángulo de refracción</td><td>°</td></tr>
-              <tr><td class="vs">v</td><td>Velocidad de la luz en el medio</td><td>m/s</td></tr>
-              <tr><td class="vs">θc</td><td>Ángulo crítico</td><td>°</td></tr>
-            </table>
-            <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ley de Snell</div><div class="fe">n₁ sin(θ₁) = n₂ sin(θ₂)</div><div class="fd">Determina la dirección del rayo refractado</div></div>
-            <div class="fb"><div class="fn">Índice y velocidad</div><div class="fe">n = c / v</div><div class="fd">A mayor n, menor velocidad de propagación en el medio</div></div>
-            <div class="fb"><div class="fn">Ángulo crítico (si n₁ &gt; n₂)</div><div class="fe">sin(θc) = n₂ / n₁</div><div class="fd">Para θ₁ &gt; θc se presenta reflexión total interna</div></div>
-          </div>
-          <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Selecciona dos medios (por ejemplo aire-agua o vidrio-aire) y varía θ₁. Comprueba cómo cambia θ₂ y detecta el ángulo crítico cuando el rayo refractado se vuelve tangente a la frontera.</p>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="chdr" onclick="tog(4)"><div class="cnum">4</div><h3>Lentes Delgadas (Convergente y Divergente)</h3><span class="ico" id="i4">▲</span></div>
-      <div class="cbody" id="b4">
-        <div class="egrid">
-          <div class="icol">
-            <div class="lbl">Descripción</div>
-            <p class="desc">Las lentes delgadas refractan rayos y pueden formar imágenes reales o virtuales. Las convergentes concentran rayos paralelos en el foco y las divergentes los separan como si provinieran de un foco virtual.</p>
-            <div class="lbl">Variables</div>
-            <table class="vt">
-              <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">f</td><td>Distancia focal de la lente</td><td>m</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto-lente</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen-lente</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">hᵢ</td><td>Altura de la imagen</td><td>m</td></tr>
-              <tr><td class="vs">P</td><td>Potencia de la lente</td><td>dioptrías</td></tr>
-            </table>
-            <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación de lente delgada</div><div class="fe">1/f = 1/d₀ + 1/dᵢ</div><div class="fd">Permite hallar la posición de la imagen</div></div>
-            <div class="fb"><div class="fn">Aumento lateral</div><div class="fe">m = hᵢ/h₀ = -dᵢ/d₀</div><div class="fd">Signo de m indica orientación de la imagen</div></div>
-            <div class="fb"><div class="fn">Potencia óptica</div><div class="fe">P = 1/f</div><div class="fd">f en metros; P positiva para convergentes y negativa para divergentes</div></div>
-          </div>
-          <div class="scol">
-            <div class="lbl">Simulación sugerida</div>
-            <p class="desc">Desplaza el objeto respecto a una lente convergente y observa los cambios de tamaño/posición de imagen al pasar por f y 2f. Luego cambia a lente divergente y verifica que la imagen es virtual, derecha y menor para cualquier d₀.</p>
-          </div>
-        </div>
-      </div>
-    </article>
-  </main>
-
-  <footer>Física 3 — Experimentos Interactivos · Universidad Tecnológica de Pereira · 2026</footer>
-
-  <script src="js/utils.js"></script>
-  <script src="js/main.js"></script>
-</body>
-</html>
+<article class="card"><div class="chdr" onclick="tog(4)"><div class="cnum">4</div><h3>Lentes Delgadas</h3><span class="ico" id="i4">▲</span></div><div class="cbody" id="b4"><div class="egrid"><div class="icol"><div class="lbl">Descripción</div><p class="desc">1/f=1/d₀+1/dᵢ, m=-dᵢ/d₀ y P=1/f.</p></div><div class="scol"><div class="lbl">Simulación</div><canvas id="cv4" height="220"></canvas><div class="ctrls"><button class="btn bgo" id="bb4">▶ Iniciar</button><button class="btn brs" id="br4">↺ Reiniciar</button></div><div class="sls"><label>f</label><input id="s4f" type="range" min="0.3" max="1.8" step="0.05" value="0.8"><span class="sv" id="d4f">0.80 m</span><label>d₀</label><input id="s4d" type="range" min="0.4" max="4" step="0.05" value="1.8"><span class="sv" id="d4d">1.80 m</span><label>h₀</label><input id="s4h" type="range" min="0.4" max="1.8" step="0.05" value="1"><span class="sv" id="d4h">1.00 m</span><label>tipo</label><select id="s4t"><option value="conv">convergente</option><option value="div">divergente</option></select><span class="sv" id="d4t">conv</span></div><div class="rdout"><div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r4di">—</div></div><div class="ri"><div class="rl">m</div><div class="rv" id="r4m">—</div></div><div class="ri"><div class="rl">P</div><div class="rv" id="r4p">—</div></div></div></div></div><div class="calc"><div class="cttl">⚡ Calculadora</div><div class="cgrid" id="cl4"></div></div></div></article>
+</main>
+<footer>Física 3 — Experimentos Interactivos · Universidad Tecnológica de Pereira · 2026</footer>
+<script src="js/utils.js"></script><script src="js/main.js"></script><script src="js/sim5.js"></script><script src="js/sim6.js"></script><script src="js/sim7.js"></script><script src="js/sim8.js"></script>
+</body></html>
