@@ -12,7 +12,7 @@
   function deg2rad(d) { return d * Math.PI / 180; }
   function rad2deg(r) { return r * 180 / Math.PI; }
 
-  function draw() {
+  function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
 
@@ -105,6 +105,83 @@
     if (n2 > n1) { thc = rad2deg(Math.asin(n1 / n2)); }
 
     // Readouts
+    document.getElementById('r7t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
+    document.getElementById('r7tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
+    document.getElementById('r7v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
+  }
+
+  function draw() {
+    const W = cv.width, H = cv.height;
+    bgd(ctx, W, H);
+
+    const intY = H * 0.50;
+    const hitX = W * 0.50;
+
+    const g1 = ctx.createLinearGradient(0, 0, 0, intY);
+    g1.addColorStop(0, 'rgba(13,71,161,.35)');
+    g1.addColorStop(1, 'rgba(21,101,192,.15)');
+    ctx.fillStyle = g1; ctx.fillRect(0, 0, W, intY);
+
+    const g2 = ctx.createLinearGradient(0, intY, 0, H);
+    g2.addColorStop(0, 'rgba(0,77,64,.2)');
+    g2.addColorStop(1, 'rgba(0,105,92,.45)');
+    ctx.fillStyle = g2; ctx.fillRect(0, intY, W, H);
+
+    ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, intY); ctx.lineTo(W, intY); ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(255,160,0,.5)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
+    drawClippedSegment(ctx, hitX, 0, hitX, H, W, H, 1);
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#90caf9'; ctx.font = 'bold 11px monospace';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText('n₁ = ' + n1.toFixed(3) + '  (v₁ = ' + (C/n1/1e8).toFixed(3) + '×10⁸ m/s)', 8, 6);
+    ctx.fillStyle = '#80cbc4'; ctx.textBaseline = 'bottom';
+    ctx.fillText('n₂ = ' + n2.toFixed(3) + '  (v₂ = ' + (C/n2/1e8).toFixed(3) + '×10⁸ m/s)', 8, H - 6);
+
+    const th1r = deg2rad(th1d);
+    const sinTh2 = n1 * Math.sin(th1r) / n2;
+    const totalInternalRefl = sinTh2 > 1;
+    const th2r = totalInternalRefl ? null : Math.asin(sinTh2);
+    const th2d = totalInternalRefl ? null : rad2deg(th2r);
+
+    const incEnd = rayEndInRect(hitX, intY, -Math.sin(th1r), -Math.cos(th1r), W, H, 1);
+    ctx.strokeStyle = '#ffcc02'; ctx.lineWidth = 2.5;
+    const incSeg = drawClippedSegment(ctx, incEnd.x, incEnd.y, hitX, intY, W, H, 1);
+    arrowAlongSegment(ctx, incSeg, '#ffcc02', 0.58);
+
+    ctx.strokeStyle = '#ff8a65'; ctx.lineWidth = totalInternalRefl ? 2.5 : 1.5;
+    const refSeg = drawClippedRay(ctx, hitX, intY, Math.sin(th1r), -Math.cos(th1r), W, H, 1);
+    arrowAlongSegment(ctx, refSeg, '#ff8a65', 0.45);
+
+    if (!totalInternalRefl) {
+      ctx.strokeStyle = '#69f0ae'; ctx.lineWidth = 2.5;
+      const refrSeg = drawClippedRay(ctx, hitX, intY, Math.sin(th2r), Math.cos(th2r), W, H, 1);
+      arrowAlongSegment(ctx, refrSeg, '#69f0ae', 0.45);
+
+      ctx.strokeStyle = 'rgba(105,240,174,.4)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(hitX, intY, 40, Math.PI/2, Math.PI/2 + th2r); ctx.stroke();
+      ctx.fillStyle = '#a5d6a7'; ctx.font = '10px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('θ₂=' + th2d.toFixed(1) + '°', hitX + 44, intY + 10);
+    } else {
+      ctx.fillStyle = '#ff5252'; ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('Reflexión Total Interna', W / 2, intY + 28);
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(hitX, intY, 3, 0, P2); ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255,204,2,.4)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(hitX, intY, 40, -Math.PI/2, -Math.PI/2 + th1r); ctx.stroke();
+    ctx.fillStyle = '#ffe082'; ctx.font = '10px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.fillText('θ₁=' + th1d.toFixed(1) + '°', hitX + 44, intY - 10);
+
+    let thc = null;
+    if (n1 > n2) thc = rad2deg(Math.asin(n2 / n1));
+    if (n2 > n1) thc = rad2deg(Math.asin(n1 / n2));
+
     document.getElementById('r7t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
     document.getElementById('r7tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
     document.getElementById('r7v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';

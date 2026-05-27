@@ -9,7 +9,7 @@
 
   function deg2rad(d) { return d * Math.PI / 180; }
 
-  function draw() {
+  function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
 
@@ -139,6 +139,107 @@
     ctx.fillText('dᵢ=' + d0.toFixed(2) + 'm', (imgX + mirX) / 2, baseY - 10);
 
     // Readouts
+    document.getElementById('r5ti').textContent = thInDeg + '°';
+    document.getElementById('r5tr').textContent = thInDeg + '°';
+    document.getElementById('r5di').textContent = d0.toFixed(3) + ' m';
+  }
+
+  function draw() {
+    const W = cv.width, H = cv.height;
+    bgd(ctx, W, H);
+
+    const th = deg2rad(angInc);
+    const hitY = h0 + d0 * Math.tan(th);
+    const yMax = Math.max(h0, hitY);
+    const map = makeWorldMapper(W, H, [-d0, 0, d0], [0, h0, hitY], 24);
+
+    const baseY = map.y(0);
+    ctx.fillStyle = '#162d47';
+    ctx.fillRect(0, baseY, W, H);
+    ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0, baseY); ctx.lineTo(W, baseY); ctx.stroke();
+
+    const mirX = map.x(0);
+    const mirTop = Math.max(12, map.y(yMax) - 6);
+    const mirH = Math.max(20, baseY - mirTop);
+    ctx.fillStyle = '#162d47';
+    ctx.fillRect(mirX - 4, mirTop, 8, mirH);
+    const mg = ctx.createLinearGradient(mirX - 4, 0, mirX + 6, 0);
+    mg.addColorStop(0, '#42a5f5');
+    mg.addColorStop(0.4, '#e3f2fd');
+    mg.addColorStop(1, '#1565c0');
+    ctx.fillStyle = mg;
+    ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.roundRect(mirX - 3, mirTop + 2, 6, mirH - 2, 2); ctx.fill(); ctx.stroke();
+
+    ctx.strokeStyle = '#0d47a1'; ctx.lineWidth = 1;
+    for (let y = mirTop + 4; y < baseY - 8; y += 12) {
+      ctx.beginPath(); ctx.moveTo(mirX + 3, y); ctx.lineTo(mirX + 9, y + 8); ctx.stroke();
+    }
+
+    const obj = map.p(-d0, h0);
+    const hit = map.p(0, hitY);
+    const img = map.p(d0, h0);
+
+    ctx.strokeStyle = 'rgba(255,160,0,.4)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
+    drawClippedSegment(ctx, 0, hit.y, W, hit.y, W, H, 1);
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#ffb300'; ctx.strokeStyle = '#ffe082'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(obj.x, obj.y, 6, 0, P2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ffe082'; ctx.font = 'bold 11px monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText('O', obj.x, obj.y - 8);
+
+    ctx.strokeStyle = 'rgba(255,179,0,.35)'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    drawClippedSegment(ctx, obj.x, obj.y, obj.x, baseY, W, H, 1);
+    ctx.setLineDash([]);
+
+    ctx.globalAlpha = 0.45;
+    ctx.fillStyle = '#80cbc4'; ctx.strokeStyle = '#b2dfdb'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(img.x, img.y, 6, 0, P2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#b2dfdb'; ctx.font = 'bold 11px monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText('I', img.x, img.y - 8);
+    ctx.globalAlpha = 1.0;
+
+    ctx.strokeStyle = 'rgba(128,203,196,.3)'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    drawClippedSegment(ctx, img.x, img.y, img.x, baseY, W, H, 1);
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = '#ffcc02'; ctx.lineWidth = 2;
+    const incSeg = drawClippedSegment(ctx, obj.x, obj.y, hit.x, hit.y, W, H, 1);
+    arrowAlongSegment(ctx, incSeg, '#ffcc02', 0.62);
+
+    const refGuide = map.p(-d0, hitY + (hitY - h0));
+    ctx.strokeStyle = '#69f0ae'; ctx.lineWidth = 2;
+    const refSeg = drawClippedRay(ctx, hit.x, hit.y, refGuide.x - hit.x, refGuide.y - hit.y, W, H, 1);
+    arrowAlongSegment(ctx, refSeg, '#69f0ae', 0.38);
+
+    ctx.strokeStyle = 'rgba(128,203,196,.55)'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
+    drawClippedSegment(ctx, hit.x, hit.y, img.x, img.y, W, H, 1);
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(hit.x, hit.y, 3, 0, P2); ctx.fill();
+
+    const thInDeg = angInc.toFixed(1);
+    ctx.fillStyle = '#ffcc80'; ctx.font = '10px monospace';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.fillText('θᵢ=' + thInDeg + '°', mirX - 8, hit.y - 16);
+    ctx.fillStyle = '#a5d6a7'; ctx.textAlign = 'left';
+    ctx.fillText('θᵣ=' + thInDeg + '°', mirX + 8, hit.y - 16);
+
+    ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
+    drawClippedSegment(ctx, obj.x, baseY - 8, mirX, baseY - 8, W, H, 1);
+    drawClippedSegment(ctx, mirX, baseY - 8, img.x, baseY - 8, W, H, 1);
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#90caf9'; ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText('d₀=' + d0.toFixed(2) + 'm', (obj.x + mirX) / 2, baseY - 10);
+    ctx.fillStyle = '#80cbc4';
+    ctx.fillText('dᵢ=' + d0.toFixed(2) + 'm', (img.x + mirX) / 2, baseY - 10);
+
     document.getElementById('r5ti').textContent = thInDeg + '°';
     document.getElementById('r5tr').textContent = thInDeg + '°';
     document.getElementById('r5di').textContent = d0.toFixed(3) + ' m';

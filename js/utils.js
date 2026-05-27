@@ -37,6 +37,117 @@ function bgd(ctx, W, H) {
   for (let y = 0; y < H; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 }
 
+function clipSegmentToRect(x1, y1, x2, y2, W, H, pad = 1) {
+  const xmin = pad, ymin = pad, xmax = W - pad, ymax = H - pad;
+  const dx = x2 - x1, dy = y2 - y1;
+  let t0 = 0, t1 = 1;
+
+  function clip(p, q) {
+    if (Math.abs(p) < 1e-9) return q >= 0;
+    const r = q / p;
+    if (p < 0) {
+      if (r > t1) return false;
+      if (r > t0) t0 = r;
+    } else {
+      if (r < t0) return false;
+      if (r < t1) t1 = r;
+    }
+    return true;
+  }
+
+  if (
+    clip(-dx, x1 - xmin) && clip(dx, xmax - x1) &&
+    clip(-dy, y1 - ymin) && clip(dy, ymax - y1)
+  ) {
+    return {
+      x1: x1 + t0 * dx,
+      y1: y1 + t0 * dy,
+      x2: x1 + t1 * dx,
+      y2: y1 + t1 * dy
+    };
+  }
+  return null;
+}
+
+function rayEndInRect(x, y, dx, dy, W, H, pad = 1) {
+  const xmin = pad, ymin = pad, xmax = W - pad, ymax = H - pad;
+  const ts = [];
+  if (dx > 1e-9) ts.push((xmax - x) / dx);
+  if (dx < -1e-9) ts.push((xmin - x) / dx);
+  if (dy > 1e-9) ts.push((ymax - y) / dy);
+  if (dy < -1e-9) ts.push((ymin - y) / dy);
+
+  ts.sort((a, b) => a - b);
+  for (const t of ts) {
+    const px = x + dx * t, py = y + dy * t;
+    if (t > 1e-9 && px >= xmin - 1e-6 && px <= xmax + 1e-6 && py >= ymin - 1e-6 && py <= ymax + 1e-6) {
+      return { x: px, y: py };
+    }
+  }
+  return { x, y };
+}
+
+function drawClippedSegment(ctx, x1, y1, x2, y2, W, H, pad = 1) {
+  const seg = clipSegmentToRect(x1, y1, x2, y2, W, H, pad);
+  if (!seg) return null;
+  ctx.beginPath();
+  ctx.moveTo(seg.x1, seg.y1);
+  ctx.lineTo(seg.x2, seg.y2);
+  ctx.stroke();
+  return seg;
+}
+
+function drawClippedRay(ctx, x, y, dx, dy, W, H, pad = 1) {
+  const end = rayEndInRect(x, y, dx, dy, W, H, pad);
+  return drawClippedSegment(ctx, x, y, end.x, end.y, W, H, pad);
+}
+
+function drawArrowhead(ctx, x, y, ang, color, size = 8) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(ang);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(-size, -size * 0.5);
+  ctx.lineTo(-size, size * 0.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function arrowAlongSegment(ctx, seg, color, at = 0.55, size = 8) {
+  if (!seg) return;
+  const x = seg.x1 + (seg.x2 - seg.x1) * at;
+  const y = seg.y1 + (seg.y2 - seg.y1) * at;
+  drawArrowhead(ctx, x, y, Math.atan2(seg.y2 - seg.y1, seg.x2 - seg.x1), color, size);
+}
+
+function makeWorldMapper(W, H, xs, ys, pad = 24) {
+  let minX = Math.min(...xs), maxX = Math.max(...xs);
+  let minY = Math.min(...ys), maxY = Math.max(...ys);
+  if (!isFinite(minX) || !isFinite(maxX) || minX === maxX) { minX = -1; maxX = 1; }
+  if (!isFinite(minY) || !isFinite(maxY) || minY === maxY) { minY = -1; maxY = 1; }
+
+  const growX = Math.max(0.15, (maxX - minX) * 0.08);
+  const growY = Math.max(0.15, (maxY - minY) * 0.12);
+  minX -= growX; maxX += growX;
+  minY -= growY; maxY += growY;
+
+  const spanX = maxX - minX;
+  const spanY = maxY - minY;
+  const sc = Math.min((W - 2 * pad) / spanX, (H - 2 * pad) / spanY);
+  const left = pad + ((W - 2 * pad) - spanX * sc) / 2;
+  const top = pad + ((H - 2 * pad) - spanY * sc) / 2;
+
+  return {
+    sc,
+    x: v => left + (v - minX) * sc,
+    y: v => top + (maxY - v) * sc,
+    p: (x, y) => ({ x: left + (x - minX) * sc, y: top + (maxY - y) * sc })
+  };
+}
+
 /** Dibuja un resorte entre dos puntos. */
 function drawSpr(ctx, x1, y1, x2, y2, coils = 8) {
   const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);

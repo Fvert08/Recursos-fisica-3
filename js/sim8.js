@@ -6,7 +6,7 @@
 
   let f = 1.5, d0 = 2.8, h0 = 0.5, tipo = 1; // tipo: 1=convergente, -1=divergente
 
-  function draw() {
+  function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
 
@@ -115,6 +115,160 @@
     ctx.fillText((tipo === 1 ? 'Convergente' : 'Divergente') + '  f=' + fs.toFixed(2) + 'm  P=' + (tipo === 1 ? '' : '-') + pot + ' D', 4, 4);
 
     // Readouts
+    const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
+    const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
+    document.getElementById('r8di').textContent = diStr;
+    document.getElementById('r8m').textContent  = mStr;
+    document.getElementById('r8P').textContent  = (tipo / Math.abs(f)).toFixed(3) + ' D';
+  }
+
+  function draw() {
+    const W = cv.width, H = cv.height;
+    bgd(ctx, W, H);
+
+    const fs = tipo * Math.abs(f);
+    const di_inv = 1 / fs - 1 / d0;
+    const di = (Math.abs(di_inv) < 1e-9) ? Infinity : 1 / di_inv;
+    const m_lat = isFinite(di) ? -di / d0 : 0;
+    const hi = h0 * m_lat;
+
+    const fAbs = Math.abs(f);
+    const obj = { x: -d0, y: h0 };
+    const img = isFinite(di) ? { x: di, y: hi } : null;
+    const focusLeft = { x: -fAbs, y: 0 };
+    const focusRight = { x: fAbs, y: 0 };
+    const hit1 = { x: 0, y: h0 };
+    const hit2 = { x: 0, y: 0 };
+    const aimFocus = fs > 0 ? focusLeft : focusRight;
+    const den3 = aimFocus.x - obj.x;
+    const hit3 = Math.abs(den3) > 1e-9
+      ? { x: 0, y: obj.y + (0 - obj.x) * (aimFocus.y - obj.y) / den3 }
+      : null;
+
+    const xs = [obj.x, 0, focusLeft.x, focusRight.x];
+    const ys = [0, obj.y, hit1.y, hit2.y];
+    if (img) { xs.push(img.x); ys.push(img.y); }
+    if (hit3 && isFinite(hit3.y)) ys.push(hit3.y);
+    const map = makeWorldMapper(W, H, xs, ys, 26);
+    const axisY = map.y(0);
+    const lensX = map.x(0);
+
+    ctx.strokeStyle = 'rgba(255,255,255,.14)'; ctx.lineWidth = 1; ctx.setLineDash([6,4]);
+    drawClippedSegment(ctx, 0, axisY, W, axisY, W, H, 1);
+    ctx.setLineDash([]);
+
+    const apertureWorld = Math.max(0.55, Math.max(Math.abs(h0), Math.abs(hit3 ? hit3.y : 0)) * 1.18);
+    const topY = map.y(apertureWorld);
+    const botY = map.y(-apertureWorld);
+    const curve = tipo === 1 ? 18 : -18;
+    ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 2.5; ctx.fillStyle = 'rgba(33,150,243,.12)';
+    ctx.beginPath();
+    ctx.moveTo(lensX, topY);
+    ctx.bezierCurveTo(lensX + curve, topY + (botY - topY) * 0.25, lensX + curve, topY + (botY - topY) * 0.75, lensX, botY);
+    ctx.bezierCurveTo(lensX - curve, topY + (botY - topY) * 0.75, lensX - curve, topY + (botY - topY) * 0.25, lensX, topY);
+    ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1;
+    drawClippedSegment(ctx, lensX, topY, lensX, botY, W, H, 1);
+
+    const fL = map.p(focusLeft.x, 0);
+    const fR = map.p(focusRight.x, 0);
+    ctx.strokeStyle = 'rgba(255,160,0,.6)'; ctx.lineWidth = 1; ctx.setLineDash([3,4]);
+    drawClippedSegment(ctx, fL.x, axisY - 12, fL.x, axisY + 12, W, H, 1);
+    drawClippedSegment(ctx, fR.x, axisY - 12, fR.x, axisY + 12, W, H, 1);
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#ffb300'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText('F', fL.x, axisY + 4);
+    ctx.fillText("F'", fR.x, axisY + 4);
+
+    const objBase = map.p(obj.x, 0);
+    const objTop = map.p(obj.x, obj.y);
+    ctx.strokeStyle = '#ffb300'; ctx.fillStyle = '#ffb300'; ctx.lineWidth = 2;
+    drawClippedSegment(ctx, objBase.x, objBase.y, objTop.x, objTop.y, W, H, 1);
+    ctx.beginPath(); ctx.moveTo(objTop.x, objTop.y); ctx.lineTo(objTop.x - 5, objTop.y + 10); ctx.lineTo(objTop.x + 5, objTop.y + 10); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#ffe082'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText('O', objTop.x + 6, objTop.y);
+
+    function drawImpact(pt) {
+      const p = map.p(pt.x, pt.y);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.6, 0, P2); ctx.fill();
+    }
+    function raySegment(a, b, color, at = 0.55) {
+      const pa = map.p(a.x, a.y), pb = map.p(b.x, b.y);
+      ctx.strokeStyle = color; ctx.lineWidth = 1.6;
+      const seg = drawClippedSegment(ctx, pa.x, pa.y, pb.x, pb.y, W, H, 1);
+      arrowAlongSegment(ctx, seg, color, at, 7);
+    }
+    function rayFrom(a, guide, color, at = 0.42) {
+      const pa = map.p(a.x, a.y), pg = map.p(guide.x, guide.y);
+      ctx.strokeStyle = color; ctx.lineWidth = 1.6;
+      const seg = drawClippedRay(ctx, pa.x, pa.y, pg.x - pa.x, pg.y - pa.y, W, H, 1);
+      arrowAlongSegment(ctx, seg, color, at, 7);
+    }
+
+    raySegment(obj, hit1, '#69f0ae', 0.62);
+    if (fs > 0) {
+      rayFrom(hit1, focusRight, '#69f0ae');
+    } else {
+      rayFrom(hit1, { x: hit1.x - (focusLeft.x - hit1.x), y: hit1.y - (focusLeft.y - hit1.y) }, '#69f0ae');
+      const h1 = map.p(hit1.x, hit1.y);
+      ctx.strokeStyle = 'rgba(128,203,196,.58)'; ctx.lineWidth = 1.3; ctx.setLineDash([5,5]);
+      drawClippedSegment(ctx, h1.x, h1.y, fL.x, fL.y, W, H, 1);
+      ctx.setLineDash([]);
+    }
+    drawImpact(hit1);
+
+    raySegment(obj, hit2, '#ff80ab', 0.62);
+    rayFrom(hit2, { x: d0, y: -h0 }, '#ff80ab');
+    drawImpact(hit2);
+
+    if (hit3 && isFinite(hit3.y)) {
+      raySegment(obj, hit3, '#80d8ff', 0.62);
+      rayFrom(hit3, { x: 1, y: hit3.y }, '#80d8ff');
+      drawImpact(hit3);
+    }
+
+    if (img) {
+      const isVirtual = di < 0;
+      if (isVirtual) {
+        ctx.strokeStyle = 'rgba(128,203,196,.58)'; ctx.lineWidth = 1.3; ctx.setLineDash([5,5]);
+        const ip = map.p(img.x, img.y);
+        for (const h of [hit1, hit2, hit3].filter(Boolean)) {
+          const hp = map.p(h.x, h.y);
+          drawClippedSegment(ctx, hp.x, hp.y, ip.x, ip.y, W, H, 1);
+        }
+        ctx.setLineDash([]);
+      }
+
+      const imgBase = map.p(img.x, 0);
+      const imgTop = map.p(img.x, img.y);
+      ctx.globalAlpha = isVirtual ? 0.5 : 1.0;
+      ctx.strokeStyle = isVirtual ? '#80cbc4' : '#40c4ff';
+      ctx.fillStyle   = isVirtual ? '#80cbc4' : '#40c4ff';
+      ctx.lineWidth = 2;
+      drawClippedSegment(ctx, imgBase.x, imgBase.y, imgTop.x, imgTop.y, W, H, 1);
+      ctx.beginPath(); ctx.moveTo(imgTop.x, imgTop.y); ctx.lineTo(imgTop.x - 5, imgTop.y + (hi >= 0 ? 10 : -10)); ctx.lineTo(imgTop.x + 5, imgTop.y + (hi >= 0 ? 10 : -10)); ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = 1.0;
+      ctx.fillStyle = '#b2ebf2'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('I', imgTop.x - 6, imgTop.y);
+
+      ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
+      drawClippedSegment(ctx, lensX, axisY + 22, imgTop.x, axisY + 22, W, H, 1);
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#80deea'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillText('dᵢ=' + di.toFixed(2) + 'm', (lensX + imgTop.x) / 2, axisY + 20);
+    }
+
+    ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
+    drawClippedSegment(ctx, objBase.x, axisY + 34, lensX, axisY + 34, W, H, 1);
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#ffcc80'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText('d₀=' + d0.toFixed(2) + 'm', (objBase.x + lensX) / 2, axisY + 32);
+
+    const pot = (1 / Math.abs(fs)).toFixed(2);
+    ctx.fillStyle = '#90caf9'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText((tipo === 1 ? 'Convergente' : 'Divergente') + '  f=' + fs.toFixed(2) + 'm  P=' + (tipo === 1 ? '' : '-') + pot + ' D', 4, 4);
+
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
     document.getElementById('r8di').textContent = diStr;
