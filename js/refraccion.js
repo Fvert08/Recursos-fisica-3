@@ -1,7 +1,7 @@
 // Refracción en Frontera Plana (Ley de Snell)
 'use strict';
 (function () {
-  const cv  = document.getElementById('cv7');
+  const cv  = document.getElementById('cv3');
   const ctx = cv.getContext('2d');
 
   let n1 = 1.0, n2 = 1.5, th1d = 35;
@@ -105,9 +105,9 @@
     if (n2 > n1) { thc = rad2deg(Math.asin(n1 / n2)); }
 
     // Readouts
-    document.getElementById('r7t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
-    document.getElementById('r7tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
-    document.getElementById('r7v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
+    document.getElementById('r3t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
+    document.getElementById('r3tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
+    document.getElementById('r3v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
   }
 
   function draw() {
@@ -182,9 +182,9 @@
     if (n1 > n2) thc = rad2deg(Math.asin(n2 / n1));
     if (n2 > n1) thc = rad2deg(Math.asin(n1 / n2));
 
-    document.getElementById('r7t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
-    document.getElementById('r7tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
-    document.getElementById('r7v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
+    document.getElementById('r3t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
+    document.getElementById('r3tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
+    document.getElementById('r3v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
   }
 
   function arrowHead(ctx, x, y, ang, color) {
@@ -200,7 +200,7 @@
     const tir = sinTh2 > 1;
     const th2d = tir ? null : rad2deg(Math.asin(sinTh2));
     const thcVal = n2 > n1 ? rad2deg(Math.asin(n1/n2)) : rad2deg(Math.asin(n2/n1));
-    document.getElementById('cl7').innerHTML = chHTML([
+    document.getElementById('cl3').innerHTML = chHTML([
       { f: 'n₁·sin(θ₁)', v: (n1 * Math.sin(th1r)).toFixed(4), u: '—'   },
       { f: 'n₂·sin(θ₂)', v: tir ? 'N/A' : (n2 * Math.sin(deg2rad(th2d))).toFixed(4), u: '—' },
       { f: 'θ₂',          v: tir ? 'N/A (R.T.I.)' : th2d.toFixed(4), u: '°'   },
@@ -223,8 +223,8 @@
     const dx = p.x - hitX, dy = intY - p.y;
     if (dy > 5) {
       th1d = Math.max(1, Math.min(89, rad2deg(Math.atan2(Math.abs(dx), dy))));
-      document.getElementById('s7t').value = th1d;
-      document.getElementById('d7t').textContent = th1d.toFixed(0) + '°';
+      document.getElementById('s3t').value = th1d;
+      document.getElementById('d3t').textContent = th1d.toFixed(0) + '°';
       draw(); updCalc();
     }
   }
@@ -235,9 +235,9 @@
     draw(); updCalc();
   }
 
-  document.getElementById('s7n1').oninput = e => { n1 = +e.target.value; document.getElementById('d7n1').textContent = n1.toFixed(2); draw(); updCalc(); };
-  document.getElementById('s7n2').oninput = e => { n2 = +e.target.value; document.getElementById('d7n2').textContent = n2.toFixed(2); draw(); updCalc(); };
-  document.getElementById('s7t').oninput  = e => { th1d = +e.target.value; document.getElementById('d7t').textContent = th1d + '°'; draw(); updCalc(); };
+  document.getElementById('s3n1').oninput = e => { n1 = +e.target.value; document.getElementById('d3n1').textContent = n1.toFixed(2); draw(); updCalc(); };
+  document.getElementById('s3n2').oninput = e => { n2 = +e.target.value; document.getElementById('d3n2').textContent = n2.toFixed(2); draw(); updCalc(); };
+  document.getElementById('s3t').oninput  = e => { th1d = +e.target.value; document.getElementById('d3t').textContent = th1d + '°'; draw(); updCalc(); };
 
   cv.addEventListener('mousedown', sd); cv.addEventListener('mousemove', sm);
   cv.addEventListener('mouseup', se);   cv.addEventListener('mouseleave', se);
@@ -245,6 +245,6 @@
   cv.addEventListener('touchmove',  e => { e.preventDefault(); sm(e); }, { passive: false });
   cv.addEventListener('touchend', se);
 
-  window.simInits[6] = init;
+  window.simInits[2] = init;
   init();
 })();

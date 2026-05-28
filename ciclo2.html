@@ -3,208 +3,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Física 3 — Ciclo 2: Óptica Geométrica</title>
+  <title>Física 3 — Ciclo 2: Movimiento Ondulatorio</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
     <h1>⚛ Física 3 — Fenómenos Físicos Interactivos</h1>
-    <p>Universidad Tecnológica de Pereira · Ciclo 2: Óptica Geométrica</p>
+    <p>Universidad Tecnológica de Pereira · Ciclo 2: Movimiento Ondulatorio</p>
   </header>
   <nav>
     <a href="index.html">Inicio</a>
     <a href="ciclo1.html">Ciclo 1: Movimiento Oscilatorio</a>
-    <a href="ciclo2.html" class="on">Ciclo 2: Óptica Geométrica</a>
-    <a href="ciclo3.html">Ciclo 3: Movimiento Ondulatorio</a>
+    <a href="ciclo2.html" class="on">Ciclo 2: Movimiento Ondulatorio</a>
+    <a href="ciclo3.html">Ciclo 3: Óptica Geométrica</a>
     <a href="creditos.html">Créditos</a>
   </nav>
-
   <main>
     <div class="cycle-intro">
-      <h2>Ciclo 2: Óptica Geométrica</h2>
-      <p>Estudio del comportamiento de la luz mediante el modelo de rayos. En este ciclo se analizan fenómenos de <strong>reflexión, refracción y formación de imágenes</strong> en espejos y lentes delgadas. Cada sistema incluye variables, ecuaciones clave y simulación interactiva para experimentar con los parámetros.</p>
+      <h2>Ciclo 2: Movimiento Ondulatorio</h2>
+      <p>Estudio de la propagación de energía a través de un medio sin transporte neto de materia. Exploraremos ondas transversales, longitudinales, fenómenos de interferencia (ondas estacionarias) y el cambio aparente de frecuencia (Efecto Doppler).</p>
     </div>
 
-    <!-- EXP 1: Espejo Plano -->
     <article class="card">
-      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Reflexión en Espejo Plano</h3><span class="ico" id="i1">▲</span></div>
+      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Onda Armónica Viajera (Transversal)</h3><span class="ico" id="i1">▲</span></div>
       <div class="cbody" id="b1">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Un espejo plano produce una imagen <strong>virtual, derecha y de igual tamaño</strong> que el objeto. La ley fundamental establece que el ángulo de incidencia es igual al ángulo de reflexión, medidos respecto a la normal de la superficie. La imagen se forma simétricamente detrás del espejo.</p>
+            <p class="desc">Una perturbación sinusoidal se propaga a lo largo de un medio unidimensional. Las partículas del medio oscilan perpendicularmente a la dirección de propagación de la onda. Arrastra verticalmente sobre la simulación para ajustar la amplitud.</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">θᵢ</td><td>Ángulo de incidencia</td><td>°</td></tr>
-              <tr><td class="vs">θᵣ</td><td>Ángulo de reflexión</td><td>°</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto-espejo</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen-espejo</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">hᵢ</td><td>Altura de la imagen</td><td>m</td></tr>
-              <tr><td class="vs">m</td><td>Aumento lateral</td><td>—</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud</td><td>m</td></tr>
+              <tr><td class="vs">λ</td><td>Longitud de onda</td><td>m</td></tr>
+              <tr><td class="vs">f</td><td>Frecuencia</td><td>Hz</td></tr>
+              <tr><td class="vs">v</td><td>Velocidad de propagación</td><td>m/s</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ley de reflexión</div><div class="fe">θᵢ = θᵣ</div><div class="fd">Todo rayo incidente se refleja con igual ángulo respecto a la normal de la superficie</div></div>
-            <div class="fb"><div class="fn">Posición de imagen en espejo plano</div><div class="fe">dᵢ = d₀</div><div class="fd">La imagen virtual se forma detrás del espejo a igual distancia que el objeto</div></div>
-            <div class="fb"><div class="fn">Aumento lateral</div><div class="fe">m = hᵢ / h₀ = +1</div><div class="fd">La imagen conserva tamaño y orientación vertical; siempre virtual y derecha</div></div>
+            <div class="fb"><div class="fn">Función de Onda</div><div class="fe">y(x,t) = A · sen(kx - ωt)</div><div class="fd">Describe el desplazamiento vertical en la posición x y tiempo t</div></div>
+            <div class="fb"><div class="fn">Número de Onda & Frec. Angular</div><div class="fe">k = 2π / λ ; ω = 2πf</div></div>
+            <div class="fb"><div class="fn">Velocidad de Propagación</div><div class="fe">v = λ · f = ω / k</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación — rayo incidente (amarillo) y reflejado (verde)</div>
-            <canvas id="cv5" height="200"></canvas>
+            <div class="lbl">Simulación — Onda propagándose hacia la derecha</div>
+            <canvas id="cv1" height="175"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb1">▶ Iniciar</button><button class="btn brs" id="br1">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>d₀</label><input type="range" id="s5d" min="0.5" max="3.0" step="0.05" value="1.5"><span class="sv" id="d5d">1.50 m</span>
-              <label>h₀</label><input type="range" id="s5h" min="0.1" max="1.2" step="0.05" value="0.6"><span class="sv" id="d5h">0.60 m</span>
-              <label>θᵢ</label><input type="range" id="s5a" min="5" max="80" step="1" value="35"><span class="sv" id="d5a">35°</span>
+              <label>A</label><input type="range" id="s1A" min="0.1" max="1" step="0.1" value="0.5"><span class="sv" id="d1A">0.5 m</span>
+              <label>λ</label><input type="range" id="s1L" min="1" max="10" step="0.5" value="4"><span class="sv" id="d1L">4.0 m</span>
+              <label>f</label><input type="range" id="s1f" min="0.1" max="3" step="0.1" value="1"><span class="sv" id="d1f">1.0 Hz</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">θᵢ</div><div class="rv" id="r5ti">35.0°</div></div>
-              <div class="ri"><div class="rl">θᵣ</div><div class="rv" id="r5tr">35.0°</div></div>
-              <div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r5di">1.500 m</div></div>
+              <div class="ri"><div class="rl">v</div><div class="rv" id="r1v">4.00 m/s</div></div>
+              <div class="ri"><div class="rl">k</div><div class="rv" id="r1k">1.57 rad/m</div></div>
+              <div class="ri"><div class="rl">ω</div><div class="rv" id="r1w">6.28 rad/s</div></div>
             </div>
           </div>
         </div>
-        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl5"></div></div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl1"></div></div>
       </div>
     </article>
 
-    <!-- EXP 2: Espejos Esféricos -->
     <article class="card">
-      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Espejos Esféricos (Cóncavo y Convexo)</h3><span class="ico" id="i2">▲</span></div>
-      <div class="cbody" id="b2">
+      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Ondas Estacionarias (Cuerda Fija)</h3><span class="ico" id="i2">▲</span></div>
+      <div class="cbody" id="b2" style="display:none;">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Los espejos esféricos forman imágenes reales o virtuales según la posición del objeto respecto al foco. El <strong>espejo cóncavo</strong> (f &gt; 0) puede producir imágenes reales e invertidas o virtuales y derechas. El <strong>espejo convexo</strong> (f &lt; 0) siempre produce imágenes virtuales, derechas y reducidas.</p>
+            <p class="desc">La superposición de dos ondas idénticas viajando en direcciones opuestas genera una onda estacionaria. En una cuerda fija en ambos extremos, solo se permiten ciertas longitudes de onda (modos normales o armónicos).</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">f</td><td>Distancia focal</td><td>m</td></tr>
-              <tr><td class="vs">R</td><td>Radio de curvatura</td><td>m</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">m</td><td>Aumento lateral</td><td>—</td></tr>
+              <tr><td class="vs">n</td><td>Número de armónico</td><td>-</td></tr>
+              <tr><td class="vs">L</td><td>Longitud de la cuerda</td><td>m</td></tr>
+              <tr><td class="vs">v</td><td>Velocidad de la onda</td><td>m/s</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación del espejo</div><div class="fe">1/f = 1/d₀ + 1/dᵢ</div><div class="fd">Relación principal para ubicar la imagen; f &gt; 0 cóncavo, f &lt; 0 convexo</div></div>
-            <div class="fb"><div class="fn">Relación foco-radio</div><div class="fe">f = R / 2</div><div class="fd">Válida para espejos esféricos en aproximación paraxial</div></div>
-            <div class="fb"><div class="fn">Aumento</div><div class="fe">m = −dᵢ / d₀</div><div class="fd">m &lt; 0: imagen invertida (real); m &gt; 0: imagen derecha (virtual)</div></div>
+            <div class="fb"><div class="fn">Ecuación Onda Estacionaria</div><div class="fe">y(x,t) = 2A · sen(kx) · cos(ωt)</div><div class="fd">Puntos con amplitud cero permanentemente se llaman Nodos.</div></div>
+            <div class="fb"><div class="fn">Frecuencia del n-ésimo armónico</div><div class="fe">f_n = n · (v / 2L)</div><div class="fd">Múltiplos enteros de la frecuencia fundamental f_1.</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación — 3 rayos canónicos · verde=ray 1 · rosa=ray 2</div>
-            <canvas id="cv6" height="210"></canvas>
+            <div class="lbl">Simulación — Cuerda de longitud L = 10m</div>
+            <canvas id="cv2" height="175"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb2">▶ Iniciar</button><button class="btn brs" id="br2">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>f</label><input type="range" id="s6f" min="0.5" max="3.0" step="0.1" value="1.2"><span class="sv" id="d6f">1.20 m</span>
-              <label>d₀</label><input type="range" id="s6d" min="0.4" max="5.0" step="0.1" value="2.5"><span class="sv" id="d6d">2.50 m</span>
-              <label>h₀</label><input type="range" id="s6h" min="0.1" max="1.0" step="0.05" value="0.5"><span class="sv" id="d6h">0.50 m</span>
-              <label>Tipo</label><input type="range" id="s6t" min="-1" max="1" step="2" value="1"><span class="sv" id="d6t">Cóncavo</span>
+              <label>n</label><input type="range" id="s2n" min="1" max="6" step="1" value="3"><span class="sv" id="d2n">3</span>
+              <label>v</label><input type="range" id="s2v" min="10" max="100" step="5" value="50"><span class="sv" id="d2v">50 m/s</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r6di">— m</div></div>
-              <div class="ri"><div class="rl">m</div><div class="rv" id="r6m">—</div></div>
-              <div class="ri"><div class="rl">Tipo img.</div><div class="rv" id="r6tp">—</div></div>
+              <div class="ri"><div class="rl">λ_n</div><div class="rv" id="r2l">6.67 m</div></div>
+              <div class="ri"><div class="rl">f_n</div><div class="rv" id="r2f">7.50 Hz</div></div>
+              <div class="ri"><div class="rl">Nodos</div><div class="rv" id="r2no">4</div></div>
             </div>
           </div>
         </div>
-        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl6"></div></div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl2"></div></div>
       </div>
     </article>
 
-    <!-- EXP 3: Refracción / Ley de Snell -->
     <article class="card">
-      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Refracción en Frontera Plana (Ley de Snell)</h3><span class="ico" id="i3">▲</span></div>
-      <div class="cbody" id="b3">
+      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Onda Longitudinal (Acústica)</h3><span class="ico" id="i3">▲</span></div>
+      <div class="cbody" id="b3" style="display:none;">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Cuando la luz pasa de un medio a otro con diferente índice de refracción, cambia su dirección y velocidad. La <strong>Ley de Snell</strong> describe exactamente esta desviación. Si n₁ &gt; n₂ y el ángulo supera el <em>ángulo crítico θ_c</em>, ocurre <strong>reflexión total interna</strong> — principio de las fibras ópticas. Arrastra el rayo en la simulación.</p>
+            <p class="desc">En las ondas longitudinales, las partículas del medio oscilan en dirección paralela a la propagación de la onda, creando zonas de compresión (alta presión) y rarefacción (baja presión). Típico de las ondas sonoras en fluidos.</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">n₁</td><td>Índice del medio incidente</td><td>—</td></tr>
-              <tr><td class="vs">n₂</td><td>Índice del medio refractado</td><td>—</td></tr>
-              <tr><td class="vs">θ₁</td><td>Ángulo de incidencia</td><td>°</td></tr>
-              <tr><td class="vs">θ₂</td><td>Ángulo de refracción</td><td>°</td></tr>
-              <tr><td class="vs">v</td><td>Velocidad de la luz en el medio</td><td>m/s</td></tr>
-              <tr><td class="vs">θc</td><td>Ángulo crítico</td><td>°</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud de desplazamiento</td><td>m</td></tr>
+              <tr><td class="vs">f</td><td>Frecuencia</td><td>Hz</td></tr>
+              <tr><td class="vs">s(x,t)</td><td>Desplazamiento longitudinal</td><td>m</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ley de Snell</div><div class="fe">n₁ sin(θ₁) = n₂ sin(θ₂)</div><div class="fd">Determina la dirección del rayo refractado al cruzar la interfaz</div></div>
-            <div class="fb"><div class="fn">Índice y velocidad</div><div class="fe">n = c / v</div><div class="fd">A mayor n, menor velocidad de propagación en el medio</div></div>
-            <div class="fb"><div class="fn">Ángulo crítico</div><div class="fe">sin(θc) = n₂ / n₁</div><div class="fd">Solo existe cuando n₁ &gt; n₂; para θ₁ &gt; θc hay reflexión total interna</div></div>
+            <div class="fb"><div class="fn">Desplazamiento de Partículas</div><div class="fe">s(x,t) = A · cos(kx - ωt)</div></div>
+            <div class="fb"><div class="fn">Variación de Presión</div><div class="fe">ΔP(x,t) = ΔP_max · sen(kx - ωt)</div><div class="fd">La presión y el desplazamiento están desfasados 90°.</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación — arrastra el rayo incidente para modificar el ángulo</div>
-            <canvas id="cv7" height="235"></canvas>
+            <div class="lbl">Simulación — Desplazamiento de partículas en un gas</div>
+            <canvas id="cv3" height="200"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb3">▶ Iniciar</button><button class="btn brs" id="br3">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>n₁</label><input type="range" id="s7n1" min="1.0" max="2.5" step="0.05" value="1.0"><span class="sv" id="d7n1">1.00</span>
-              <label>n₂</label><input type="range" id="s7n2" min="1.0" max="2.5" step="0.05" value="1.5"><span class="sv" id="d7n2">1.50</span>
-              <label>θ₁</label><input type="range" id="s7t" min="1" max="89" step="1" value="35"><span class="sv" id="d7t">35°</span>
+              <label>A</label><input type="range" id="s3A" min="0.1" max="1" step="0.1" value="0.5"><span class="sv" id="d3A">0.5 m</span>
+              <label>λ</label><input type="range" id="s3L" min="2" max="12" step="1" value="6"><span class="sv" id="d3L">6.0 m</span>
+              <label>f</label><input type="range" id="s3f" min="0.5" max="5" step="0.5" value="2"><span class="sv" id="d3f">2.0 Hz</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">θ₂</div><div class="rv" id="r7t2">—°</div></div>
-              <div class="ri"><div class="rl">θ_crítico</div><div class="rv" id="r7tc">—°</div></div>
-              <div class="ri"><div class="rl">v₂</div><div class="rv" id="r7v2">— m/s</div></div>
+              <div class="ri"><div class="rl">v_onda</div><div class="rv" id="r3v">12.00 m/s</div></div>
+              <div class="ri"><div class="rl">T</div><div class="rv" id="r3t">0.50 s</div></div>
             </div>
           </div>
         </div>
-        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl7"></div></div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl3"></div></div>
       </div>
     </article>
 
-    <!-- EXP 4: Lentes Delgadas -->
     <article class="card">
-      <div class="chdr" onclick="tog(4)"><div class="cnum">4</div><h3>Lentes Delgadas (Convergente y Divergente)</h3><span class="ico" id="i4">▲</span></div>
-      <div class="cbody" id="b4">
+      <div class="chdr" onclick="tog(4)"><div class="cnum">4</div><h3>Efecto Doppler (Acústica)</h3><span class="ico" id="i4">▲</span></div>
+      <div class="cbody" id="b4" style="display:none;">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Las lentes delgadas refractan rayos y forman imágenes reales o virtuales. Las <strong>convergentes</strong> (f &gt; 0, P &gt; 0) concentran rayos paralelos en el foco y las <strong>divergentes</strong> (f &lt; 0, P &lt; 0) los separan como si provinieran de un foco virtual. La potencia P en dioptrías es el inverso de la distancia focal.</p>
+            <p class="desc">Cambio aparente en la frecuencia percibida por un observador debido al movimiento relativo entre la fuente de la onda y el observador. Ajusta las velocidades de ambos y la frecuencia original para observar la compresión espacial de los frentes de onda en un campo de 3000 metros.</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">f</td><td>Distancia focal de la lente</td><td>m</td></tr>
-              <tr><td class="vs">d₀</td><td>Distancia objeto-lente</td><td>m</td></tr>
-              <tr><td class="vs">dᵢ</td><td>Distancia imagen-lente</td><td>m</td></tr>
-              <tr><td class="vs">h₀</td><td>Altura del objeto</td><td>m</td></tr>
-              <tr><td class="vs">m</td><td>Aumento lateral</td><td>—</td></tr>
-              <tr><td class="vs">P</td><td>Potencia de la lente</td><td>dioptrías (D)</td></tr>
+              <tr><td class="vs">v</td><td>Velocidad del sonido (343)</td><td>m/s</td></tr>
+              <tr><td class="vs">v_s</td><td>Velocidad de la fuente</td><td>m/s</td></tr>
+              <tr><td class="vs">v_o</td><td>Velocidad del observador</td><td>m/s</td></tr>
+              <tr><td class="vs">f_s</td><td>Frecuencia emitida</td><td>Hz</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación de lente delgada (Gauss)</div><div class="fe">1/f = 1/d₀ + 1/dᵢ</div><div class="fd">Permite hallar la posición de la imagen; convención de signos de Descartes</div></div>
-            <div class="fb"><div class="fn">Aumento lateral</div><div class="fe">m = −dᵢ / d₀</div><div class="fd">m &lt; 0: imagen invertida y real; m &gt; 0: imagen derecha y virtual</div></div>
-            <div class="fb"><div class="fn">Potencia óptica</div><div class="fe">P = 1 / f</div><div class="fd">f en metros; P positiva para convergentes y negativa para divergentes</div></div>
+            <div class="fb"><div class="fn">Frecuencia Observada (f')</div><div class="fe">f' = f_s [ (v - v_o) / (v - v_s) ]</div><div class="fd">Regla de signos estándar basada en un sistema de coordenadas vectoriales.</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación — 3 rayos canónicos · arrastra los sliders</div>
-            <canvas id="cv8" height="215"></canvas>
+            <div class="lbl">Simulación — Campo de 3000 metros (Ciclo de 8s)</div>
+            <canvas id="cv4" height="250"></canvas>
+            <div class="ctrls"><button class="btn bgo" id="bb4">▶ Iniciar</button><button class="btn brs" id="br4">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>f</label><input type="range" id="s8f" min="0.5" max="3.0" step="0.1" value="1.5"><span class="sv" id="d8f">1.50 m</span>
-              <label>d₀</label><input type="range" id="s8d" min="0.4" max="5.5" step="0.1" value="2.8"><span class="sv" id="d8d">2.80 m</span>
-              <label>h₀</label><input type="range" id="s8h" min="0.1" max="1.0" step="0.05" value="0.5"><span class="sv" id="d8h">0.50 m</span>
-              <label>Tipo</label><input type="range" id="s8t" min="-1" max="1" step="2" value="1"><span class="sv" id="d8t">Convergente</span>
+              <label>v_s</label><input type="range" id="s4vs" min="-250" max="250" step="10" value="150"><span class="sv" id="d4vs">150 m/s</span>
+              <label>v_o</label><input type="range" id="s4vo" min="-150" max="150" step="10" value="0"><span class="sv" id="d4vo">0 m/s</span>
+              <label>f_s</label><input type="range" id="s4fs" min="40" max="180" step="5" value="100"><span class="sv" id="d4fs">100.0 Hz</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">dᵢ</div><div class="rv" id="r8di">— m</div></div>
-              <div class="ri"><div class="rl">m</div><div class="rv" id="r8m">—</div></div>
-              <div class="ri"><div class="rl">P</div><div class="rv" id="r8P">— D</div></div>
+              <div class="ri"><div class="rl">f_fuente</div><div class="rv" id="r4fs">100.0 Hz</div></div>
+              <div class="ri"><div class="rl">f_observada</div><div class="rv" id="r4fo">177.7 Hz</div></div>
+              <div class="ri"><div class="rl">Mach (v_s/v)</div><div class="rv" id="r4m">0.44</div></div>
             </div>
           </div>
         </div>
-        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl8"></div></div>
+        <div class="calc"><div class="cttl">⚡ Calculadora — resultados con los valores actuales</div><div class="cgrid" id="cl4"></div></div>
       </div>
     </article>
   </main>
-
   <footer>Física 3 — Experimentos Interactivos · Universidad Tecnológica de Pereira · 2026</footer>
 
-  <!-- Scripts: orden obligatorio -->
   <script src="js/utils.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/sim5.js"></script>
-  <script src="js/sim6.js"></script>
-  <script src="js/sim7.js"></script>
-  <script src="js/sim8.js"></script>
+  <script src="js/onda-viajera.js"></script>
+  <script src="js/onda-estacionaria.js"></script>
+  <script src="js/onda-longitudinal.js"></script>
+  <script src="js/doppler.js"></script>
 </body>
 </html>

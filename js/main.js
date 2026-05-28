@@ -1,7 +1,7 @@
 'use strict';
 
 // Registro global de funciones init de cada simulación
-// Cada sim*.js empuja su función init aquí
+// Cada archivo de simulación empuja su función init aquí
 window.simInits = [];
 
 /**
