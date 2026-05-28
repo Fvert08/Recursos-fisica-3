@@ -1,7 +1,7 @@
 // Reflexión en Espejo Plano
 'use strict';
 (function () {
-  const cv  = document.getElementById('cv5');
+  const cv  = document.getElementById('cv1');
   const ctx = cv.getContext('2d');
 
   let d0 = 1.5, h0 = 0.6, angInc = 35;
@@ -139,9 +139,9 @@
     ctx.fillText('dᵢ=' + d0.toFixed(2) + 'm', (imgX + mirX) / 2, baseY - 10);
 
     // Readouts
-    document.getElementById('r5ti').textContent = thInDeg + '°';
-    document.getElementById('r5tr').textContent = thInDeg + '°';
-    document.getElementById('r5di').textContent = d0.toFixed(3) + ' m';
+    document.getElementById('r1ti').textContent = thInDeg + '°';
+    document.getElementById('r1tr').textContent = thInDeg + '°';
+    document.getElementById('r1di').textContent = d0.toFixed(3) + ' m';
   }
 
   function draw() {
@@ -240,9 +240,9 @@
     ctx.fillStyle = '#80cbc4';
     ctx.fillText('dᵢ=' + d0.toFixed(2) + 'm', (img.x + mirX) / 2, baseY - 10);
 
-    document.getElementById('r5ti').textContent = thInDeg + '°';
-    document.getElementById('r5tr').textContent = thInDeg + '°';
-    document.getElementById('r5di').textContent = d0.toFixed(3) + ' m';
+    document.getElementById('r1ti').textContent = thInDeg + '°';
+    document.getElementById('r1tr').textContent = thInDeg + '°';
+    document.getElementById('r1di').textContent = d0.toFixed(3) + ' m';
   }
 
   function arrowHead(ctx, x, y, ang, color) {
@@ -254,7 +254,7 @@
 
   function updCalc() {
     const m_lat = 1;
-    document.getElementById('cl5').innerHTML = chHTML([
+    document.getElementById('cl1').innerHTML = chHTML([
       { f: 'θᵢ = θᵣ',    v: '✓ igual',      u: '°'   },
       { f: 'dᵢ = d₀',    v: d0.toFixed(4),  u: 'm'   },
       { f: 'm = +1',      v: '1.0000',       u: '—'   },
@@ -269,16 +269,16 @@
     draw(); updCalc();
   }
 
-  document.getElementById('s5d').oninput = e => {
-    d0 = +e.target.value; document.getElementById('d5d').textContent = d0.toFixed(2) + ' m'; draw(); updCalc();
+  document.getElementById('s1d').oninput = e => {
+    d0 = +e.target.value; document.getElementById('d1d').textContent = d0.toFixed(2) + ' m'; draw(); updCalc();
   };
-  document.getElementById('s5h').oninput = e => {
-    h0 = +e.target.value; document.getElementById('d5h').textContent = h0.toFixed(2) + ' m'; draw(); updCalc();
+  document.getElementById('s1h').oninput = e => {
+    h0 = +e.target.value; document.getElementById('d1h').textContent = h0.toFixed(2) + ' m'; draw(); updCalc();
   };
-  document.getElementById('s5a').oninput = e => {
-    angInc = +e.target.value; document.getElementById('d5a').textContent = angInc + '°'; draw(); updCalc();
+  document.getElementById('s1a').oninput = e => {
+    angInc = +e.target.value; document.getElementById('d1a').textContent = angInc + '°'; draw(); updCalc();
   };
 
-  window.simInits[4] = init;
+  window.simInits[0] = init;
   init();
 })();
