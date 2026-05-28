@@ -1,7 +1,7 @@
 // Espejos Esféricos (Cóncavo y Convexo)
 'use strict';
 (function () {
-  const cv  = document.getElementById('cv6');
+  const cv  = document.getElementById('cv2');
   const ctx = cv.getContext('2d');
 
   let f = 1.2, d0 = 2.5, h0 = 0.5, tipo = 1; // tipo: 1=cóncavo, -1=convexo
@@ -120,9 +120,9 @@
     // Readouts
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
-    document.getElementById('r6di').textContent = diStr;
-    document.getElementById('r6m').textContent  = mStr;
-    document.getElementById('r6tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
+    document.getElementById('r2di').textContent = diStr;
+    document.getElementById('r2m').textContent  = mStr;
+    document.getElementById('r2tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
   }
 
   function draw() {
@@ -270,9 +270,9 @@
 
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
-    document.getElementById('r6di').textContent = diStr;
-    document.getElementById('r6m').textContent  = mStr;
-    document.getElementById('r6tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
+    document.getElementById('r2di').textContent = diStr;
+    document.getElementById('r2m').textContent  = mStr;
+    document.getElementById('r2tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
   }
 
   function updCalc() {
@@ -281,7 +281,7 @@
     const di = (Math.abs(di_inv) < 1e-9) ? Infinity : 1 / di_inv;
     const m_lat = isFinite(di) ? -di / d0 : 0;
     const hi = h0 * m_lat;
-    document.getElementById('cl6').innerHTML = chHTML([
+    document.getElementById('cl2').innerHTML = chHTML([
       { f: 'f = R/2',      v: fs.toFixed(4),         u: 'm'   },
       { f: '1/dᵢ = 1/f−1/d₀', v: isFinite(di) ? di.toFixed(4) : '∞', u: 'm' },
       { f: 'm = −dᵢ/d₀',  v: isFinite(di) ? m_lat.toFixed(4) : '—', u: '—' },
@@ -296,15 +296,15 @@
     draw(); updCalc();
   }
 
-  document.getElementById('s6f').oninput = e => { f = +e.target.value; document.getElementById('d6f').textContent = f.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s6d').oninput = e => { d0 = +e.target.value; document.getElementById('d6d').textContent = d0.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s6h').oninput = e => { h0 = +e.target.value; document.getElementById('d6h').textContent = h0.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s6t').oninput = e => {
+  document.getElementById('s2f').oninput = e => { f = +e.target.value; document.getElementById('d2f').textContent = f.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s2d').oninput = e => { d0 = +e.target.value; document.getElementById('d2d').textContent = d0.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s2h').oninput = e => { h0 = +e.target.value; document.getElementById('d2h').textContent = h0.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s2t').oninput = e => {
     tipo = +e.target.value;
-    document.getElementById('d6t').textContent = tipo === 1 ? 'Cóncavo' : 'Convexo';
+    document.getElementById('d2t').textContent = tipo === 1 ? 'Cóncavo' : 'Convexo';
     draw(); updCalc();
   };
 
-  window.simInits[5] = init;
+  window.simInits[1] = init;
   init();
 })();

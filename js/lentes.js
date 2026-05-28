@@ -1,7 +1,7 @@
 // Lentes Delgadas (Convergente y Divergente)
 'use strict';
 (function () {
-  const cv  = document.getElementById('cv8');
+  const cv  = document.getElementById('cv4');
   const ctx = cv.getContext('2d');
 
   let f = 1.5, d0 = 2.8, h0 = 0.5, tipo = 1; // tipo: 1=convergente, -1=divergente
@@ -117,9 +117,9 @@
     // Readouts
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
-    document.getElementById('r8di').textContent = diStr;
-    document.getElementById('r8m').textContent  = mStr;
-    document.getElementById('r8P').textContent  = (tipo / Math.abs(f)).toFixed(3) + ' D';
+    document.getElementById('r4di').textContent = diStr;
+    document.getElementById('r4m').textContent  = mStr;
+    document.getElementById('r4P').textContent  = (tipo / Math.abs(f)).toFixed(3) + ' D';
   }
 
   function draw() {
@@ -271,9 +271,9 @@
 
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
-    document.getElementById('r8di').textContent = diStr;
-    document.getElementById('r8m').textContent  = mStr;
-    document.getElementById('r8P').textContent  = (tipo / Math.abs(f)).toFixed(3) + ' D';
+    document.getElementById('r4di').textContent = diStr;
+    document.getElementById('r4m').textContent  = mStr;
+    document.getElementById('r4P').textContent  = (tipo / Math.abs(f)).toFixed(3) + ' D';
   }
 
   function updCalc() {
@@ -283,7 +283,7 @@
     const m_lat = isFinite(di) ? -di / d0 : 0;
     const hi = h0 * m_lat;
     const P = tipo / Math.abs(f);
-    document.getElementById('cl8').innerHTML = chHTML([
+    document.getElementById('cl4').innerHTML = chHTML([
       { f: 'P = 1/f',       v: P.toFixed(4),                            u: 'D'   },
       { f: 'dᵢ',            v: isFinite(di) ? di.toFixed(4) : '∞',     u: 'm'   },
       { f: 'm = −dᵢ/d₀',   v: isFinite(di) ? m_lat.toFixed(4) : '—',  u: '—'   },
@@ -298,15 +298,15 @@
     draw(); updCalc();
   }
 
-  document.getElementById('s8f').oninput = e => { f = +e.target.value; document.getElementById('d8f').textContent = f.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s8d').oninput = e => { d0 = +e.target.value; document.getElementById('d8d').textContent = d0.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s8h').oninput = e => { h0 = +e.target.value; document.getElementById('d8h').textContent = h0.toFixed(2)+' m'; draw(); updCalc(); };
-  document.getElementById('s8t').oninput = e => {
+  document.getElementById('s4f').oninput = e => { f = +e.target.value; document.getElementById('d4f').textContent = f.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s4d').oninput = e => { d0 = +e.target.value; document.getElementById('d4d').textContent = d0.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s4h').oninput = e => { h0 = +e.target.value; document.getElementById('d4h').textContent = h0.toFixed(2)+' m'; draw(); updCalc(); };
+  document.getElementById('s4t').oninput = e => {
     tipo = +e.target.value;
-    document.getElementById('d8t').textContent = tipo === 1 ? 'Convergente' : 'Divergente';
+    document.getElementById('d4t').textContent = tipo === 1 ? 'Convergente' : 'Divergente';
     draw(); updCalc();
   };
 
-  window.simInits[7] = init;
+  window.simInits[3] = init;
   init();
 })();
