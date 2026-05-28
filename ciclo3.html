@@ -3,62 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Física 3 — Ciclo 3: Ondas y Acústica</title>
+  <title>Física 3 — Ciclo 3: Movimiento Ondulatorio</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
     <h1>⚛ Física 3 — Fenómenos Físicos Interactivos</h1>
-    <p>Universidad Tecnológica de Pereira · Ciclo 3: Ondas y Acústica</p>
+    <p>Universidad Tecnológica de Pereira · Ciclo 3: Movimiento Ondulatorio</p>
   </header>
   <nav>
     <a href="index.html">Inicio</a>
     <a href="ciclo1.html">Ciclo 1: Movimiento Oscilatorio</a>
     <a href="ciclo2.html">Ciclo 2: Óptica Geométrica</a>
-    <a href="ciclo3.html" class="on">Ciclo 3: Ondas y Acústica</a>
-    <span class="lk">🔒 Ciclo 4</span>
+    <a href="ciclo3.html" class="on">Ciclo 3: Movimiento Ondulatorio</a>
+    <a href="creditos.html">Créditos</a>
   </nav>
   <main>
     <div class="cycle-intro">
-      <h2>Ciclo 3: Ondas y Acústica</h2>
-      <p>Análisis de la propagación de perturbaciones mecánicas a través de medios elásticos y sus aplicaciones cinemáticas. Explora desde el comportamiento básico de las ondas armónicas viajeras y estacionarias, hasta interacciones complejas como el fenómeno temporal de batidos y el cambio de frecuencias relativas modelado por el <strong>Efecto Doppler</strong>.</p>
+      <h2>Ciclo 3: Movimiento Ondulatorio</h2>
+      <p>Estudio de la propagación de energía a través de un medio sin transporte neto de materia. Exploraremos ondas transversales, longitudinales, fenómenos de interferencia (ondas estacionarias) y el cambio aparente de frecuencia (Efecto Doppler).</p>
     </div>
 
     <article class="card">
-      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Ondas Armónicas Viajeras en una Cuerda</h3><span class="ico" id="i1">▲</span></div>
+      <div class="chdr" onclick="tog(1)"><div class="cnum">1</div><h3>Onda Armónica Viajera (Transversal)</h3><span class="ico" id="i1">▲</span></div>
       <div class="cbody" id="b1">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Una perturbación senoidal continua viaja a través de una cuerda elástica. Cada partícula del medio ejecuta un movimiento armónico simple en dirección transversal al avance de la energía. La velocidad de fase depende exclusivamente de las propiedades del medio (tensión y densidad elástica).</p>
+            <p class="desc">Una perturbación sinusoidal se propaga a lo largo de un medio unidimensional. Las partículas del medio oscilan perpendicularmente a la dirección de propagación de la onda. Arrastra verticalmente sobre la simulación para ajustar la amplitud.</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">A</td><td>Amplitud de la onda</td><td>m</td></tr>
-              <tr><td class="vs">f</td><td>Frecuencia del oscilador</td><td>Hz</td></tr>
-              <tr><td class="vs">v</td><td>Velocidad de propagación</td><td>m/s</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud</td><td>m</td></tr>
               <tr><td class="vs">λ</td><td>Longitud de onda</td><td>m</td></tr>
-              <tr><td class="vs">k</td><td>Número de onda angular</td><td>rad/m</td></tr>
-              <tr><td class="vs">ω</td><td>Frecuencia angular</td><td>rad/s</td></tr>
+              <tr><td class="vs">f</td><td>Frecuencia</td><td>Hz</td></tr>
+              <tr><td class="vs">v</td><td>Velocidad de propagación</td><td>m/s</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Función de onda armónica (hacia +x)</div><div class="fe">y(x,t) = A · cos(kx - ωt)</div><div class="fd">Establece la posición transversal de cualquier segmento x en un instante t.</div></div>
-            <div class="fb"><div class="fn">Relación fundamental cinemática</div><div class="fe">v = f · λ = λ / T</div><div class="fd">Espacio avanzado por un frente de onda por cada ciclo temporal completado.</div></div>
-            <div class="fb"><div class="fn">Periodicidad espacial y temporal</div><div class="fe">k = 2π / λ &nbsp;,&nbsp; ω = 2πf</div><div class="fd">Factores de conversión a radianes para distancias y tiempos respectivamente.</div></div>
+            <div class="fb"><div class="fn">Función de Onda</div><div class="fe">y(x,t) = A · sen(kx - ωt)</div><div class="fd">Describe el desplazamiento vertical en la posición x y tiempo t</div></div>
+            <div class="fb"><div class="fn">Número de Onda & Frec. Angular</div><div class="fe">k = 2π / λ ; ω = 2πf</div></div>
+            <div class="fb"><div class="fn">Velocidad de Propagación</div><div class="fe">v = λ · f = ω / k</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación interactiva — onda continua</div>
+            <div class="lbl">Simulación — Onda propagándose hacia la derecha</div>
             <canvas id="cv1" height="175"></canvas>
             <div class="ctrls"><button class="btn bgo" id="bb1">▶ Iniciar</button><button class="btn brs" id="br1">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>A</label><input type="range" id="s1A" min="5" max="35" step="1" value="20"><span class="sv" id="d1A">20 px</span>
-              <label>f</label><input type="range" id="s1f" min="0.5" max="3" step="0.1" value="1.2"><span class="sv" id="d1f">1.2 Hz</span>
-              <label>v</label><input type="range" id="s1v" min="60" max="240" step="10" value="120"><span class="sv" id="d1v">120 px/s</span>
+              <label>A</label><input type="range" id="s1A" min="0.1" max="1" step="0.1" value="0.5"><span class="sv" id="d1A">0.5 m</span>
+              <label>λ</label><input type="range" id="s1L" min="1" max="10" step="0.5" value="4"><span class="sv" id="d1L">4.0 m</span>
+              <label>f</label><input type="range" id="s1f" min="0.1" max="3" step="0.1" value="1"><span class="sv" id="d1f">1.0 Hz</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">λ (Espacio)</div><div class="rv" id="r1lam">100.0 px</div></div>
-              <div class="ri"><div class="rl">T (Período)</div><div class="rv" id="r1T">0.83 s</div></div>
-              <div class="ri"><div class="rl">k (N. Onda)</div><div class="rv" id="r1k">0.06 rad/px</div></div>
+              <div class="ri"><div class="rl">v</div><div class="rv" id="r1v">4.00 m/s</div></div>
+              <div class="ri"><div class="rl">k</div><div class="rv" id="r1k">1.57 rad/m</div></div>
+              <div class="ri"><div class="rl">ω</div><div class="rv" id="r1w">6.28 rad/s</div></div>
             </div>
           </div>
         </div>
@@ -67,38 +65,35 @@
     </article>
 
     <article class="card">
-      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Ondas Estacionarias y Modos Normales</h3><span class="ico" id="i2">▲</span></div>
+      <div class="chdr" onclick="tog(2)"><div class="cnum">2</div><h3>Ondas Estacionarias (Cuerda Fija)</h3><span class="ico" id="i2">▲</span></div>
       <div class="cbody" id="b2" style="display:none;">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">La superposición de dos ondas de igual frecuencia viajando en sentidos opuestos (incidente y reflejada) genera un patrón estacionario. Ciertos puntos permanecen inmóviles (nodos), mientras otros alcanzan amplitudes máximas (antinodos). Ocurre únicamente en frecuencias de resonancia específicas.</p>
+            <p class="desc">La superposición de dos ondas idénticas viajando en direcciones opuestas genera una onda estacionaria. En una cuerda fija en ambos extremos, solo se permiten ciertas longitudes de onda (modos normales o armónicos).</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">L</td><td>Longitud de la frontera fija</td><td>m</td></tr>
-              <tr><td class="vs">n</td><td>Número del armónico resonante</td><td>-</td></tr>
-              <tr><td class="vs">v</td><td>Velocidad de fase intrínseca</td><td>m/s</td></tr>
-              <tr><td class="vs">f_n</td><td>Frecuencia del modo armónico</td><td>Hz</td></tr>
+              <tr><td class="vs">n</td><td>Número de armónico</td><td>-</td></tr>
+              <tr><td class="vs">L</td><td>Longitud de la cuerda</td><td>m</td></tr>
+              <tr><td class="vs">v</td><td>Velocidad de la onda</td><td>m/s</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación de la onda estacionaria</div><div class="fe">y(x,t) = [2A · sin(kx)] · cos(ωt)</div><div class="fd">La amplitud espacial queda confinada y modulada por la función sin(kx).</div></div>
-            <div class="fb"><div class="fn">Cuantización de la longitud de onda</div><div class="fe">λ_n = 2L / n</div><div class="fd">Condición límite: los extremos de la cuerda deben actuar estrictamente como nodos.</div></div>
-            <div class="fb"><div class="fn">Frecuencias naturales (Espectro)</div><div class="fe">f_n = n · (v / 2L)</div><div class="fd">Frecuencias resonantes múltiplos enteros de la frecuencia fundamental (n=1).</div></div>
+            <div class="fb"><div class="fn">Ecuación Onda Estacionaria</div><div class="fe">y(x,t) = 2A · sen(kx) · cos(ωt)</div><div class="fd">Puntos con amplitud cero permanentemente se llaman Nodos.</div></div>
+            <div class="fb"><div class="fn">Frecuencia del n-ésimo armónico</div><div class="fe">f_n = n · (v / 2L)</div><div class="fd">Múltiplos enteros de la frecuencia fundamental f_1.</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación interactiva — límites fijos</div>
+            <div class="lbl">Simulación — Cuerda de longitud L = 10m</div>
             <canvas id="cv2" height="175"></canvas>
             <div class="ctrls"><button class="btn bgo" id="bb2">▶ Iniciar</button><button class="btn brs" id="br2">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>L</label><input type="range" id="s2L" min="250" max="450" step="10" value="400"><span class="sv" id="d2L">400 px</span>
               <label>n</label><input type="range" id="s2n" min="1" max="6" step="1" value="3"><span class="sv" id="d2n">3</span>
-              <label>v</label><input type="range" id="s2v" min="100" max="300" step="10" value="180"><span class="sv" id="d2v">180 px/s</span>
+              <label>v</label><input type="range" id="s2v" min="10" max="100" step="5" value="50"><span class="sv" id="d2v">50 m/s</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">f_n (Resonancia)</div><div class="rv" id="r2fn">0.68 Hz</div></div>
-              <div class="ri"><div class="rl">λ_n (Modo)</div><div class="rv" id="r2lam">266.7 px</div></div>
-              <div class="ri"><div class="rl">Nodos Totales</div><div class="rv" id="r2nod">4</div></div>
+              <div class="ri"><div class="rl">λ_n</div><div class="rv" id="r2l">6.67 m</div></div>
+              <div class="ri"><div class="rl">f_n</div><div class="rv" id="r2f">7.50 Hz</div></div>
+              <div class="ri"><div class="rl">Nodos</div><div class="rv" id="r2no">4</div></div>
             </div>
           </div>
         </div>
@@ -107,37 +102,35 @@
     </article>
 
     <article class="card">
-      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Interferencia Temporal: Fenómeno de Batidos</h3><span class="ico" id="i3">▲</span></div>
+      <div class="chdr" onclick="tog(3)"><div class="cnum">3</div><h3>Onda Longitudinal (Acústica)</h3><span class="ico" id="i3">▲</span></div>
       <div class="cbody" id="b3" style="display:none;">
         <div class="egrid">
           <div class="icol">
             <div class="lbl">Descripción</div>
-            <p class="desc">Fenómeno acústico producido al superponer dos ondas sonoras paralelas cuyas frecuencias difieren por un rango estrecho. La interferencia en un punto varía continuamente entre constructiva y destructiva en el tiempo, creando una modulación periódica audible en la amplitud de la señal combinada.</p>
+            <p class="desc">En las ondas longitudinales, las partículas del medio oscilan en dirección paralela a la propagación de la onda, creando zonas de compresión (alta presión) y rarefacción (baja presión). Típico de las ondas sonoras en fluidos.</p>
             <div class="lbl">Variables</div>
             <table class="vt">
               <tr><th>Símbolo</th><th>Variable</th><th>Unidad</th></tr>
-              <tr><td class="vs">f_1</td><td>Frecuencia de la fuente primaria</td><td>Hz</td></tr>
-              <tr><td class="vs">f_2</td><td>Frecuencia de la fuente secundaria</td><td>Hz</td></tr>
-              <tr><td class="vs">f_b</td><td>Frecuencia de batido (pulsación)</td><td>Hz</td></tr>
-              <tr><td class="vs">f_p</td><td>Frecuencia promedio percibida</td><td>Hz</td></tr>
+              <tr><td class="vs">A</td><td>Amplitud de desplazamiento</td><td>m</td></tr>
+              <tr><td class="vs">f</td><td>Frecuencia</td><td>Hz</td></tr>
+              <tr><td class="vs">s(x,t)</td><td>Desplazamiento longitudinal</td><td>m</td></tr>
             </table>
             <div class="lbl">Fórmulas</div>
-            <div class="fb"><div class="fn">Ecuación resultante de interferencia</div><div class="fe">y(t) = [2A · cos(2π · <sup>f_b</sup>&frasl;<sub>2</sub> · t)] · cos(2π · f_p · t)</div><div class="fd">Representa un tono central oscilando rápidamente bajo una envolvente lenta.</div></div>
-            <div class="fb"><div class="fn">Frecuencia de batido</div><div class="fe">f_b = |f_1 - f_2|</div><div class="fd">La cantidad de pulsaciones rítmicas de volumen alto que se perciben por segundo.</div></div>
-            <div class="fb"><div class="fn">Frecuencia promedio del tono</div><div class="fe">f_p = (f_1 + f_2) / 2</div><div class="fd">La altura musical promedio que el oído humano realmente decodifica.</div></div>
+            <div class="fb"><div class="fn">Desplazamiento de Partículas</div><div class="fe">s(x,t) = A · cos(kx - ωt)</div></div>
+            <div class="fb"><div class="fn">Variación de Presión</div><div class="fe">ΔP(x,t) = ΔP_max · sen(kx - ωt)</div><div class="fd">La presión y el desplazamiento están desfasados 90°.</div></div>
           </div>
           <div class="scol">
-            <div class="lbl">Simulación interactiva — superposición temporal</div>
-            <canvas id="cv3" height="175"></canvas>
+            <div class="lbl">Simulación — Desplazamiento de partículas en un gas</div>
+            <canvas id="cv3" height="200"></canvas>
             <div class="ctrls"><button class="btn bgo" id="bb3">▶ Iniciar</button><button class="btn brs" id="br3">↺ Reiniciar</button></div>
             <div class="sls">
-              <label>f_1</label><input type="range" id="s3f1" min="40" max="70" step="0.5" value="55"><span class="sv" id="d3f1">55.0 Hz</span>
-              <label>f_2</label><input type="range" id="s3f2" min="40" max="70" step="0.5" value="51"><span class="sv" id="d3f2">51.0 Hz</span>
+              <label>A</label><input type="range" id="s3A" min="0.1" max="1" step="0.1" value="0.5"><span class="sv" id="d3A">0.5 m</span>
+              <label>λ</label><input type="range" id="s3L" min="2" max="12" step="1" value="6"><span class="sv" id="d3L">6.0 m</span>
+              <label>f</label><input type="range" id="s3f" min="0.5" max="5" step="0.5" value="2"><span class="sv" id="d3f">2.0 Hz</span>
             </div>
             <div class="rdout">
-              <div class="ri"><div class="rl">f_batido (f_b)</div><div class="rv" id="r3fb">4.0 Hz</div></div>
-              <div class="ri"><div class="rl">f_promedio (f_p)</div><div class="rv" id="r3fpm">53.0 Hz</div></div>
-              <div class="ri"><div class="rl">T_batido (Ciclo)</div><div class="rv" id="r3Tb">0.25 s</div></div>
+              <div class="ri"><div class="rl">v_onda</div><div class="rv" id="r3v">12.00 m/s</div></div>
+              <div class="ri"><div class="rl">T</div><div class="rv" id="r3t">0.50 s</div></div>
             </div>
           </div>
         </div>
