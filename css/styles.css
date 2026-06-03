@@ -19,7 +19,7 @@ body {
   line-height: 1.6;
 }
 
-/* ── Header ─────────────────────────────────────── */
+/* C ── Encabezado ─────────────────────────────────── */
 header {
   background: linear-gradient(155deg, #0a1929, #1a3a6e);
   color: #fff;
@@ -29,7 +29,7 @@ header {
 header h1 { font-size: 1.55rem; font-weight: 700; }
 header p  { color: #7eb3e8; font-size: .84rem; margin-top: 4px; }
 
-/* ── Nav ─────────────────────────────────────────── */
+/* C ── Navegación ─────────────────────────────────── */
 nav {
   background: #0a1929;
   display: flex;
@@ -51,10 +51,10 @@ nav a.on  { color: #fff; border-color: var(--acc); }
 nav a:hover { color: #fff; }
 nav .lk   { color: #2e4a6a; cursor: default; }
 
-/* ── Main ────────────────────────────────────────── */
+/* C ── Contenido principal ─────────────────────────── */
 main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 
-/* ── Hub (index) ────────────────────────────────── */
+/* C ── Tarjetas de inicio ─────────────────────────── */
 .hub-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -85,7 +85,7 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 .hub-card p   { font-size: .84rem; color: var(--muted); }
 .hub-btn      { display: inline-block; margin-top: 14px; color: var(--lb); font-weight: 600; font-size: .85rem; }
 
-/* ── Cycle intro ─────────────────────────────────── */
+/* C ── Introducción de ciclo ───────────────────────── */
 .cycle-intro {
   background: linear-gradient(135deg, #1a3a6e, #0a1929);
   color: #fff;
@@ -96,7 +96,7 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 .cycle-intro h2 { font-size: 1.18rem; margin-bottom: 4px; }
 .cycle-intro p  { color: #93c5fd; font-size: .86rem; max-width: 740px; }
 
-/* ── Card ────────────────────────────────────────── */
+/* C ── Tarjeta desplegable ─────────────────────────── */
 .card {
   background: var(--card);
   border: 1px solid var(--bdr);
@@ -128,7 +128,7 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 .chdr h3 { color: var(--navy); font-size: 1.04rem; flex: 1; }
 .ico     { color: var(--muted); font-size: .75rem; margin-left: auto; }
 
-/* ── Experiment grid ─────────────────────────────── */
+/* C ── Cuadrícula de experimento ───────────────────── */
 .egrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -146,7 +146,7 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 }
 .scol { padding: 14px 16px; display: flex; flex-direction: column; gap: 7px; }
 
-/* ── Info labels ─────────────────────────────────── */
+/* C ── Etiquetas informativas ──────────────────────── */
 .lbl {
   font-size: .67rem; font-weight: 700;
   letter-spacing: 1px; text-transform: uppercase;
@@ -158,14 +158,14 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 .lbl:first-child { margin-top: 0; }
 .desc { font-size: .87rem; color: #2c3e50; line-height: 1.75; }
 
-/* ── Variables table ─────────────────────────────── */
+/* C ── Tabla de variables ──────────────────────────── */
 .vt { width: 100%; border-collapse: collapse; font-size: .81rem; margin-top: 4px; }
 .vt th { background: #dbeafe; color: var(--navy); font-weight: 600; padding: 5px 9px; text-align: left; }
 .vt td { padding: 4px 9px; border-bottom: 1px solid #f0f4fa; }
 .vt tr:last-child td { border: none; }
 .vs { font-family: 'Times New Roman', serif; font-style: italic; font-weight: 700; color: var(--lb); }
 
-/* ── Formula box ─────────────────────────────────── */
+/* F ── Caja de fórmulas ────────────────────────────── */
 .fb {
   background: #e8f4fd;
   border: 1px solid #90caf9;
@@ -178,7 +178,7 @@ main { max-width: 1220px; margin: 0 auto; padding: 28px 14px; }
 .fb .fe { font-family: 'Times New Roman', serif; font-size: 1.04rem; color: var(--navy); }
 .fb .fd { font-size: .72rem; color: var(--muted); margin-top: 1px; }
 
-/* ── Simulation canvas ───────────────────────────── */
+/* C ── Lienzo de simulación ────────────────────────── */
 canvas {
   width: 100%;
   background: #0b1e33;
@@ -187,7 +187,7 @@ canvas {
   cursor: crosshair;
 }
 
-/* ── Buttons ─────────────────────────────────────── */
+/* C ── Botones ─────────────────────────────────────── */
 .ctrls { display: flex; gap: 7px; }
 .btn   { padding: 6px 14px; border: none; border-radius: 5px; cursor: pointer; font-size: .81rem; font-weight: 600; }
 .bgo   { background: var(--lb); color: #fff; }
@@ -195,7 +195,7 @@ canvas {
 .brs   { background: #e0e7ef; color: var(--text); }
 .brs:hover { background: #cfd8e3; }
 
-/* ── Sliders ─────────────────────────────────────── */
+/* C ── Deslizadores ───────────────────────────────── */
 .sls { display: grid; grid-template-columns: auto 1fr 70px; gap: 4px 8px; align-items: center; }
 .sls label { font-family: 'Times New Roman', serif; font-style: italic; font-size: .95rem; color: var(--muted); }
 .sls input { accent-color: var(--lb); }
@@ -205,13 +205,13 @@ canvas {
   padding: 2px 5px; border-radius: 4px; text-align: right;
 }
 
-/* ── Readout row ─────────────────────────────────── */
+/* C ── Fila de resultados ──────────────────────────── */
 .rdout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .ri    { background: #0a1929; color: #fff; border-radius: 6px; padding: 6px 8px; text-align: center; }
 .ri .rl { font-size: .64rem; color: #7eb3e8; font-family: 'Times New Roman', serif; font-style: italic; }
 .ri .rv { font-family: monospace; font-size: .83rem; font-weight: 600; }
 
-/* ── Calculator ──────────────────────────────────── */
+/* C ── Calculadora ─────────────────────────────────── */
 .calc  { background: #f4f7fb; border-top: 1px solid var(--bdr); padding: 13px 18px; }
 .cttl  { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--acc); margin-bottom: 7px; }
 .cgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 7px; }
@@ -220,7 +220,7 @@ canvas {
 .ci .cv { font-size: 1.04rem; font-weight: 700; color: var(--navy); font-family: monospace; }
 .ci .cu { font-size: .69rem; color: var(--muted); }
 
-/* ── Locked card ─────────────────────────────────── */
+/* C ── Tarjeta bloqueada ───────────────────────────── */
 .lcard {
   background: var(--card); border: 2px dashed var(--bdr);
   border-radius: 10px; padding: 36px;
@@ -228,7 +228,7 @@ canvas {
   margin: 10px 0;
 }
 
-/* ── Footer ──────────────────────────────────────── */
+/* C ── Pie de página ───────────────────────────────── */
 footer {
   background: #0a1929; color: #7eb3e8;
   text-align: center; padding: 16px;

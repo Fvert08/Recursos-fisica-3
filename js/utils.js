@@ -1,10 +1,10 @@
 'use strict';
 
-// Constantes globales
+// C Constantes globales
 const GV  = 9.8;
 const P2  = 2 * Math.PI;
 
-// polyfill roundRect
+// C Compatibilidad para navegadores sin roundRect nativo
 if (!CanvasRenderingContext2D.prototype.roundRect) {
   CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
     r = Math.min(r, w / 2, h / 2);
@@ -17,7 +17,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
   };
 }
 
-/** Obtiene posición del evento (mouse o touch) relativa al canvas. */
+/** C Obtiene la posición del evento (ratón o toque) relativa al lienzo. */
 function gpos(e, cv) {
   const r = cv.getBoundingClientRect();
   const s = e.touches ? e.touches[0] : e;
@@ -27,7 +27,7 @@ function gpos(e, cv) {
   };
 }
 
-/** Dibuja fondo oscuro con cuadrícula. */
+/** C Dibuja fondo oscuro con cuadrícula. */
 function bgd(ctx, W, H) {
   ctx.fillStyle = '#0b1e33';
   ctx.fillRect(0, 0, W, H);
@@ -37,11 +37,13 @@ function bgd(ctx, W, H) {
   for (let y = 0; y < H; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 }
 
+// C Recorta un segmento para que solo se dibuje dentro del rectángulo del lienzo.
 function clipSegmentToRect(x1, y1, x2, y2, W, H, pad = 1) {
   const xmin = pad, ymin = pad, xmax = W - pad, ymax = H - pad;
   const dx = x2 - x1, dy = y2 - y1;
   let t0 = 0, t1 = 1;
 
+  // C Aplica una frontera del algoritmo de recorte paramétrico.
   function clip(p, q) {
     if (Math.abs(p) < 1e-9) return q >= 0;
     const r = q / p;
@@ -69,6 +71,7 @@ function clipSegmentToRect(x1, y1, x2, y2, W, H, pad = 1) {
   return null;
 }
 
+// C Calcula el punto donde un rayo semirrecto sale del lienzo.
 function rayEndInRect(x, y, dx, dy, W, H, pad = 1) {
   const xmin = pad, ymin = pad, xmax = W - pad, ymax = H - pad;
   const ts = [];
@@ -87,6 +90,7 @@ function rayEndInRect(x, y, dx, dy, W, H, pad = 1) {
   return { x, y };
 }
 
+// C Dibuja un segmento recortado y devuelve sus extremos visibles.
 function drawClippedSegment(ctx, x1, y1, x2, y2, W, H, pad = 1) {
   const seg = clipSegmentToRect(x1, y1, x2, y2, W, H, pad);
   if (!seg) return null;
@@ -97,11 +101,13 @@ function drawClippedSegment(ctx, x1, y1, x2, y2, W, H, pad = 1) {
   return seg;
 }
 
+// C Dibuja un rayo desde un origen hasta el borde visible del lienzo.
 function drawClippedRay(ctx, x, y, dx, dy, W, H, pad = 1) {
   const end = rayEndInRect(x, y, dx, dy, W, H, pad);
   return drawClippedSegment(ctx, x, y, end.x, end.y, W, H, pad);
 }
 
+// C Dibuja una punta triangular para indicar dirección de avance.
 function drawArrowhead(ctx, x, y, ang, color, size = 8) {
   ctx.save();
   ctx.translate(x, y);
@@ -116,6 +122,7 @@ function drawArrowhead(ctx, x, y, ang, color, size = 8) {
   ctx.restore();
 }
 
+// C Coloca una flecha sobre un segmento ya recortado.
 function arrowAlongSegment(ctx, seg, color, at = 0.55, size = 8) {
   if (!seg) return;
   const x = seg.x1 + (seg.x2 - seg.x1) * at;
@@ -123,6 +130,7 @@ function arrowAlongSegment(ctx, seg, color, at = 0.55, size = 8) {
   drawArrowhead(ctx, x, y, Math.atan2(seg.y2 - seg.y1, seg.x2 - seg.x1), color, size);
 }
 
+// C Crea funciones para convertir coordenadas físicas a píxeles.
 function makeWorldMapper(W, H, xs, ys, pad = 24) {
   let minX = Math.min(...xs), maxX = Math.max(...xs);
   let minY = Math.min(...ys), maxY = Math.max(...ys);
@@ -148,7 +156,7 @@ function makeWorldMapper(W, H, xs, ys, pad = 24) {
   };
 }
 
-/** Dibuja un resorte entre dos puntos. */
+/** F Dibuja un resorte entre dos puntos. */
 function drawSpr(ctx, x1, y1, x2, y2, coils = 8) {
   const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
   if (len < 4) return;
@@ -160,19 +168,19 @@ function drawSpr(ctx, x1, y1, x2, y2, coils = 8) {
   ctx.lineTo(len, 0); ctx.stroke(); ctx.restore();
 }
 
-/** Genera HTML para las tarjetas de la calculadora. */
+/** C Genera HTML para las tarjetas de la calculadora. */
 function chHTML(items) {
   return items.map(({ f, v, u }) =>
     `<div class="ci"><div class="cf">${f}</div><div class="cv">${v}</div><div class="cu">${u}</div></div>`
   ).join('');
 }
 
-/**
- * Un paso de integración Runge-Kutta 4 para osciladores.
- * @param {number} th - ángulo/posición actual
- * @param {number} om - velocidad angular/lineal actual
- * @param {number} dt - paso de tiempo
- * @param {function} alpha - función alpha(th) que retorna la aceleración
+/** C
+ * C Un paso de integración Runge-Kutta 4 para osciladores.
+ * F @param {number} th - ángulo/posición actual
+ * F @param {number} om - velocidad angular/lineal actual
+ * C @param {number} dt - paso de tiempo
+ * F @param {function} alpha - función alpha(th) que retorna la aceleración
  */
 function rk4(th, om, dt, alpha) {
   const k1t = om,          k1w = alpha(th);
