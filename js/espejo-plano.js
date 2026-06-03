@@ -1,14 +1,17 @@
-// Reflexión en Espejo Plano
+// F Reflexión en espejo plano: aplica θᵢ = θᵣ e imagen virtual simétrica.
 'use strict';
 (function () {
   const cv  = document.getElementById('cv1');
   const ctx = cv.getContext('2d');
 
+  // C Estado editable: distancia del objeto, altura y ángulo incidente.
   let d0 = 1.5, h0 = 0.6, angInc = 35;
   let running = false, raf = null, t = 0;
 
+  // C Conversión auxiliar de grados a radianes para funciones trigonométricas.
   function deg2rad(d) { return d * Math.PI / 180; }
 
+  // C Dibujo de respaldo conservado para comparar el trazado original.
   function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -18,13 +21,13 @@
     const scaleH = (H - 60) / 2.5;
     const scaleD = (W * 0.42) / 3.0;
 
-    // Piso
+    // C Superficie de apoyo dibujada como referencia visual
     ctx.fillStyle = '#162d47';
     ctx.fillRect(0, baseY, W, H);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(0, baseY); ctx.lineTo(W, baseY); ctx.stroke();
 
-    // Espejo
+    // F Espejo
     const mirH = H - 60;
     ctx.fillStyle = '#162d47';
     ctx.fillRect(mirX - 4, 16, 8, mirH);
@@ -36,38 +39,38 @@
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.roundRect(mirX - 3, 18, 6, mirH - 2, 2); ctx.fill(); ctx.stroke();
 
-    // Marcas del espejo
+    // F Marcas del espejo
     ctx.strokeStyle = '#0d47a1'; ctx.lineWidth = 1;
     for (let y = 20; y < mirH; y += 12) {
       ctx.beginPath(); ctx.moveTo(mirX + 3, y); ctx.lineTo(mirX + 9, y + 8); ctx.stroke();
     }
 
-    // Normal punteada
+    // F Normal punteada
     ctx.strokeStyle = 'rgba(255,160,0,.4)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
     ctx.beginPath(); ctx.moveTo(mirX, 10); ctx.lineTo(mirX, baseY - 4); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Objeto
+    // F Objeto
     const objX = mirX - d0 * scaleD;
     const objY = baseY - h0 * scaleH;
 
-    // Punto objeto
+    // F Punto objeto
     ctx.fillStyle = '#ffb300'; ctx.strokeStyle = '#ffe082'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(objX, objY, 6, 0, P2); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#ffe082'; ctx.font = 'bold 11px monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
     ctx.fillText('O', objX, objY - 8);
 
-    // Línea del objeto al suelo
+    // F Línea del objeto al suelo
     ctx.strokeStyle = 'rgba(255,179,0,.35)'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
     ctx.beginPath(); ctx.moveTo(objX, objY); ctx.lineTo(objX, baseY); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Imagen (detrás del espejo, misma distancia)
+    // F Imagen (detrás del espejo, misma distancia)
     const imgX = mirX + d0 * scaleD;
     const imgY = objY;
 
-    // Imagen virtual (más tenue)
+    // F Imagen virtual (más tenue)
     ctx.globalAlpha = 0.45;
     ctx.fillStyle = '#80cbc4'; ctx.strokeStyle = '#b2dfdb'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(imgX, imgY, 6, 0, P2); ctx.fill(); ctx.stroke();
@@ -76,33 +79,33 @@
     ctx.fillText('I', imgX, imgY - 8);
     ctx.globalAlpha = 1.0;
 
-    // Línea imagen al suelo (punteada)
+    // F Línea imagen al suelo (punteada)
     ctx.strokeStyle = 'rgba(128,203,196,.3)'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
     ctx.beginPath(); ctx.moveTo(imgX, imgY); ctx.lineTo(imgX, baseY); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Rayo incidente desde objeto hasta espejo en eje de normal
+    // F Rayo incidente desde objeto hasta espejo en eje de normal
     const hitY = baseY - (baseY - 26) * 0.38;
     const inAngleRad = deg2rad(angInc);
-    // punto en el espejo donde incide el rayo
+    // F punto en el espejo donde incide el rayo
     const hitYActual = objY + (mirX - objX) * Math.tan(inAngleRad - Math.PI/2 + Math.PI/2);
-    // Usamos la normal horizontal: ángulo respecto a la normal (eje X)
+    // F Usamos la normal horizontal: ángulo respecto a la normal (eje X)
     const mirHitY = baseY * 0.45 + 20;
 
-    // Punto de incidencia en espejo
+    // F Punto de incidencia en espejo
     const hitYp = baseY * 0.42;
 
-    // Rayo incidente
+    // F Rayo incidente
     ctx.strokeStyle = '#ffcc02'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(objX, objY); ctx.lineTo(mirX, hitYp); ctx.stroke();
-    // Flecha
+    // C Flecha visual que indica dirección o magnitud
     const ang1 = Math.atan2(hitYp - objY, mirX - objX);
     const mx1 = objX + (mirX - objX) * 0.55, my1 = objY + (hitYp - objY) * 0.55;
     arrowHead(ctx, mx1, my1, ang1, '#ffcc02');
 
-    // Rayo reflejado (ángulo igual respecto a la normal vertical del espejo)
+    // F Rayo reflejado (ángulo igual respecto a la normal vertical del espejo)
     const dxIn = mirX - objX, dyIn = hitYp - objY;
-    // reflexión respecto a la normal vertical (x-axis flip)
+    // F Reflexión respecto a la normal vertical: se invierte la componente horizontal.
     const dxRef = -dxIn, dyRef = dyIn;
     const refLen = Math.hypot(dxRef, dyRef) * 1.0;
     const refEndX = mirX + (dxRef / Math.hypot(dxRef, dyRef)) * refLen;
@@ -114,12 +117,12 @@
     const mx2 = mirX + dxRef * 0.45, my2 = hitYp + dyRef * 0.45;
     arrowHead(ctx, mx2, my2, ang2, '#69f0ae');
 
-    // Rayo virtual (hacia imagen, punteado)
+    // F Rayo virtual (hacia imagen, punteado)
     ctx.strokeStyle = 'rgba(128,203,196,.55)'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
     ctx.beginPath(); ctx.moveTo(mirX, hitYp); ctx.lineTo(imgX, objY); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Ángulo de incidencia visual
+    // F Ángulo de incidencia visual
     const thInDeg = (Math.atan2(Math.abs(dxIn), Math.abs(dyIn)) * 180 / Math.PI).toFixed(1);
     ctx.fillStyle = '#ffcc80'; ctx.font = '10px monospace';
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
@@ -127,7 +130,7 @@
     ctx.fillStyle = '#a5d6a7'; ctx.textAlign = 'left';
     ctx.fillText('θᵣ=' + thInDeg + '°', mirX + 8, hitYp - 16);
 
-    // Etiquetas distancias
+    // C Etiquetas distancias
     ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
     ctx.beginPath(); ctx.moveTo(objX, baseY - 8); ctx.lineTo(mirX, baseY - 8); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(mirX, baseY - 8); ctx.lineTo(imgX, baseY - 8); ctx.stroke();
@@ -138,12 +141,13 @@
     ctx.fillStyle = '#80cbc4';
     ctx.fillText('dᵢ=' + d0.toFixed(2) + 'm', (imgX + mirX) / 2, baseY - 10);
 
-    // Readouts
+    // C Salidas numéricas mostradas en el panel de resultados
     document.getElementById('r1ti').textContent = thInDeg + '°';
     document.getElementById('r1tr').textContent = thInDeg + '°';
     document.getElementById('r1di').textContent = d0.toFixed(3) + ' m';
   }
 
+  // C Redibuja espejo, objeto, imagen virtual y rayos principales.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -245,6 +249,7 @@
     document.getElementById('r1di').textContent = d0.toFixed(3) + ' m';
   }
 
+  // C Dibuja la punta de una flecha orientada sobre un rayo.
   function arrowHead(ctx, x, y, ang, color) {
     ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
     ctx.fillStyle = color;
@@ -252,6 +257,7 @@
     ctx.restore();
   }
 
+  // F Actualiza la calculadora con ley de reflexión, distancias e imagen.
   function updCalc() {
     const m_lat = 1;
     document.getElementById('cl1').innerHTML = chHTML([
@@ -264,6 +270,7 @@
     ]);
   }
 
+  // C Ajusta lienzo y sincroniza controles con la primera imagen.
   function init() {
     cv.width = cv.parentElement.clientWidth || 460;
     draw(); updCalc();

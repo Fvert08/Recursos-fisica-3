@@ -1,18 +1,22 @@
-//Masa-Resorte Vertical
+// F Masa-Resorte Vertical
 'use strict';
 (function () {
   const cv  = document.getElementById('cv2');
   const ctx = cv.getContext('2d');
   const PPM = 300;
 
+  // C Estado editable: masa, constante elástica, amplitud y tiempo de simulación.
   let m = 1, k = 20, A = .08, t = 0;
   let running = false, raf = null, drag = false, negY = false;
 
+  // F ω = √(k/m) controla la rapidez de oscilación del sistema masa-resorte.
   const om  = () => Math.sqrt(k / m);
+  // F Δ = mg/k es el alargamiento de equilibrio por gravedad.
   const del = () => m * GV / k;
   const yp  = () => A * Math.cos(om() * t) * (negY ? -1 : 1);
   const yv  = () => -A * om() * Math.sin(om() * t) * (negY ? -1 : 1);
 
+  // C Redibuja el montaje vertical, el resorte y las lecturas numéricas.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -20,24 +24,24 @@
     const cx = W / 2, visEqY = H * .55, bW = 40, bH = 40;
     const cur = yp(), bCX = cx, bCY = visEqY + cur * PPM;
 
-    // Techo
+    // C Soporte superior fijo
     ctx.fillStyle = '#162d47'; ctx.fillRect(cx - 22, 0, 44, 22);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(0, 22); ctx.lineTo(W, 22); ctx.stroke();
     ctx.strokeStyle = '#1a3a5f'; ctx.lineWidth = 1;
     for (let i = -8; i < 44 + 8; i += 14) { ctx.beginPath(); ctx.moveTo(cx - 22 + i, 22); ctx.lineTo(cx - 22 + i + 12, 10); ctx.stroke(); }
 
-    // Equilibrio
+    // F Equilibrio
     ctx.strokeStyle = 'rgba(255,160,0,.4)'; ctx.lineWidth = 1; ctx.setLineDash([5, 5]);
     ctx.beginPath(); ctx.moveTo(cx - 36, visEqY); ctx.lineTo(cx + 36, visEqY); ctx.stroke(); ctx.setLineDash([]);
     ctx.fillStyle = 'rgba(255,179,0,.7)'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText('Equilibrio', cx + 38, visEqY);
 
-    // Resorte
+    // F Resorte
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.8;
     drawSpr(ctx, cx, 22, cx, bCY - bH / 2, 8);
 
-    // Bloque
+    // C Bloque
     const g1 = ctx.createLinearGradient(bCX - bW / 2, bCY - bH / 2, bCX + bW / 2, bCY + bH / 2);
     g1.addColorStop(0, '#42a5f5'); g1.addColorStop(1, '#0d47a1');
     ctx.fillStyle = g1; ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.5;
@@ -45,7 +49,7 @@
     ctx.fillStyle = '#fff'; ctx.font = 'bold 11px sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('m', bCX, bCY);
 
-    // Flecha
+    // C Flecha visual que indica dirección o magnitud
     if (Math.abs(cur) > .004) {
       const ax = bCX + bW / 2 + 14, dir = cur > 0 ? 1 : -1;
       ctx.strokeStyle = '#ffb300'; ctx.fillStyle = '#ffb300'; ctx.lineWidth = 1.5;
@@ -63,6 +67,7 @@
     document.getElementById('r2d').textContent = del().toFixed(4) + ' m';
   }
 
+  // F Calcula período, frecuencia, equilibrio y energía mecánica.
   function updCalc() {
     const w = om(), T = P2 / w, d = del(), E = .5 * k * A * A;
     document.getElementById('cl2').innerHTML = chHTML([
@@ -75,8 +80,10 @@
     ]);
   }
 
+  // C Bucle de animación para avanzar el tiempo cuando está en marcha.
   function loop() { if (!running) return; t += .016; draw(); raf = requestAnimationFrame(loop); }
 
+  // C Ajusta el lienzo y prepara el estado inicial visible.
   function init() {
     cv.width = cv.parentElement.clientWidth || 460;
     draw(); updCalc();

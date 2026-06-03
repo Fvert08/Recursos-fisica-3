@@ -3,12 +3,15 @@
   const cv  = document.getElementById('cv3');
   const ctx = cv.getContext('2d');
   
+  // C Estado editable: amplitud, longitud de onda, frecuencia y tiempo.
   let A = 0.5, L = 6, f = 2, t = 0;
   let running = false, raf = null;
+  // F El desplazamiento longitudinal usa s(x,t)=A cos(kx-ωt).
   const k = () => (2 * Math.PI) / L;
   const w = () => 2 * Math.PI * f;
   const v = () => L * f;
 
+  // C Dibuja partículas desplazadas para visualizar compresiones y rarefacciones.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -16,12 +19,12 @@
     ctx.fillStyle = '#90caf9';
     const rows = 8, cols = 35;
     const spacingX = W / cols, spacingY = H / (rows + 1);
-    const ampPx = A * 18; // Escala visual
+    const ampPx = A * 18; // C Escala visual
 
     for (let r = 1; r <= rows; r++) {
       for (let c = 0; c <= cols; c++) {
         const x0 = c * spacingX;
-        // x real métrico para el desfase
+        // C x real métrico para el desfase
         const xReal = (x0 / W) * 20; 
         const deltaX = ampPx * Math.cos(k() * xReal - w() * t);
         
@@ -35,6 +38,7 @@
     document.getElementById('r3t').textContent = (1/f).toFixed(2) + ' s';
   }
 
+  // F Calcula velocidad de propagación y período de la onda sonora.
   function updCalc() {
     document.getElementById('cl3').innerHTML = chHTML([
       { f: 'v = λ·f', v: v().toFixed(2), u: 'm/s' },
@@ -44,7 +48,9 @@
     ]);
   }
 
+  // C Avanza el tiempo y redibuja las partículas del medio.
   function loop() { if (!running) return; t += 0.016; draw(); raf = requestAnimationFrame(loop); }
+  // C Ajusta el lienzo y muestra el patrón longitudinal inicial.
   function init() { cv.width = cv.parentElement.clientWidth || 460; draw(); updCalc(); }
 
   document.getElementById('bb3').onclick = () => {

@@ -1,17 +1,21 @@
-// Refracción en Frontera Plana (Ley de Snell)
+// F Refracción en frontera plana: aplica la ley de Snell n₁ senθ₁ = n₂ senθ₂. (Ley de Snell)
 'use strict';
 (function () {
   const cv  = document.getElementById('cv3');
   const ctx = cv.getContext('2d');
 
+  // C Estado editable: índices de refracción y ángulo incidente.
   let n1 = 1.0, n2 = 1.5, th1d = 35;
   let drag = false;
 
+  // F Velocidad de la luz en el vacío usada para calcular v = c/n.
   const C = 3e8;
 
+  // C Conversión auxiliar entre grados y radianes para trigonometría.
   function deg2rad(d) { return d * Math.PI / 180; }
   function rad2deg(r) { return r * 180 / Math.PI; }
 
+  // C Dibujo de respaldo del rayo incidente, reflejado y refractado.
   function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -19,28 +23,28 @@
     const intY = H * 0.50;
     const hitX = W * 0.50;
 
-    // Medio 1 (arriba)
+    // F Medio 1 (arriba)
     const g1 = ctx.createLinearGradient(0, 0, 0, intY);
     g1.addColorStop(0, 'rgba(13,71,161,.35)');
     g1.addColorStop(1, 'rgba(21,101,192,.15)');
     ctx.fillStyle = g1; ctx.fillRect(0, 0, W, intY);
 
-    // Medio 2 (abajo)
+    // F Medio 2 (abajo)
     const g2 = ctx.createLinearGradient(0, intY, 0, H);
     g2.addColorStop(0, 'rgba(0,77,64,.2)');
     g2.addColorStop(1, 'rgba(0,105,92,.45)');
     ctx.fillStyle = g2; ctx.fillRect(0, intY, W, H);
 
-    // Frontera
+    // F Frontera
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(0, intY); ctx.lineTo(W, intY); ctx.stroke();
 
-    // Normal
+    // F Normal
     ctx.strokeStyle = 'rgba(255,160,0,.5)'; ctx.lineWidth = 1; ctx.setLineDash([5,4]);
     ctx.beginPath(); ctx.moveTo(hitX, intY - H * 0.42); ctx.lineTo(hitX, intY + H * 0.42); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Etiquetas medios
+    // F Etiquetas medios
     ctx.fillStyle = '#90caf9'; ctx.font = 'bold 11px monospace';
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('n₁ = ' + n1.toFixed(3) + '  (v₁ = ' + (C/n1/1e8).toFixed(3) + '×10⁸ m/s)', 8, 6);
@@ -53,18 +57,18 @@
     const th2r = totalInternalRefl ? null : Math.asin(sinTh2);
     const th2d = totalInternalRefl ? null : rad2deg(th2r);
 
-    // Rayo incidente (viene desde arriba-izquierda)
+    // F Rayo incidente (viene desde arriba-izquierda)
     const rayLen = Math.min(H * 0.45, W * 0.45);
     const incX1 = hitX - rayLen * Math.sin(th1r);
     const incY1 = intY - rayLen * Math.cos(th1r);
     ctx.strokeStyle = '#ffcc02'; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(incX1, incY1); ctx.lineTo(hitX, intY); ctx.stroke();
-    // flecha
+    // C Flecha visual del rayo
     const ang1 = Math.atan2(intY - incY1, hitX - incX1);
     const mx1 = (incX1 + hitX) / 2, my1 = (incY1 + intY) / 2;
     arrowHead(ctx, mx1, my1, ang1, '#ffcc02');
 
-    // Rayo reflejado
+    // F Rayo reflejado
     const refX = hitX + rayLen * Math.sin(th1r);
     const refY = intY - rayLen * Math.cos(th1r);
     ctx.strokeStyle = '#ff8a65'; ctx.lineWidth = totalInternalRefl ? 2.5 : 1.5;
@@ -72,7 +76,7 @@
     const angRef = Math.atan2(refY - intY, refX - hitX);
     arrowHead(ctx, (hitX + refX)/2, (intY + refY)/2, angRef, '#ff8a65');
 
-    // Rayo refractado
+    // F Rayo refractado
     if (!totalInternalRefl) {
       const refracX = hitX + rayLen * Math.sin(th2r);
       const refracY = intY + rayLen * Math.cos(th2r);
@@ -81,35 +85,36 @@
       const angRefrac = Math.atan2(refracY - intY, refracX - hitX);
       arrowHead(ctx, (hitX + refracX)/2, (intY + refracY)/2, angRefrac, '#69f0ae');
 
-      // Ángulo θ₂
+      // F Ángulo θ₂
       ctx.strokeStyle = 'rgba(105,240,174,.4)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(hitX, intY, 40, Math.PI/2, Math.PI/2 + th2r); ctx.stroke();
       ctx.fillStyle = '#a5d6a7'; ctx.font = '10px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('θ₂=' + th2d.toFixed(1) + '°', hitX + 44, intY + 10);
     } else {
-      // Reflexión total interna
+      // F Reflexión total interna
       ctx.fillStyle = '#ff5252'; ctx.font = 'bold 11px monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('⚠ Reflexión Total Interna', W / 2, intY + 28);
     }
 
-    // Ángulo θ₁
+    // F Ángulo θ₁
     ctx.strokeStyle = 'rgba(255,204,2,.4)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.arc(hitX, intY, 40, -Math.PI/2, -Math.PI/2 + th1r); ctx.stroke();
     ctx.fillStyle = '#ffe082'; ctx.font = '10px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
     ctx.fillText('θ₁=' + th1d.toFixed(1) + '°', hitX + 44, intY - 10);
 
-    // Ángulo crítico si aplica (n1 > n2 — pero para ver el ángulo crítico el rayo vendría de medio desnso)
+    // F Ángulo crítico si aplica (n1 > n2); aparece cuando el rayo pasa de un medio más denso a uno menos denso.
     let thc = null;
     if (n1 > n2) { thc = rad2deg(Math.asin(n2 / n1)); }
     if (n2 > n1) { thc = rad2deg(Math.asin(n1 / n2)); }
 
-    // Readouts
+    // C Salidas numéricas mostradas en el panel de resultados
     document.getElementById('r3t2').textContent = totalInternalRefl ? 'R.T.I.' : th2d.toFixed(2) + '°';
     document.getElementById('r3tc').textContent = thc !== null ? thc.toFixed(2) + '°' : '—';
     document.getElementById('r3v2').textContent = (C / n2 / 1e6).toFixed(2) + '×10⁶ m/s';
   }
 
+  // C Redibuja medios, normal, ángulos y rayo refractado o reflexión total.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -194,6 +199,7 @@
     ctx.restore();
   }
 
+  // F Actualiza Snell, ángulo crítico y velocidades en cada medio.
   function updCalc() {
     const th1r = deg2rad(th1d);
     const sinTh2 = n1 * Math.sin(th1r) / n2;
@@ -210,7 +216,7 @@
     ]);
   }
 
-  // Drag sobre el rayo incidente (mover ángulo)
+  // C Arrastre sobre el rayo incidente para modificar el ángulo
   function sd(e) {
     const p = gpos(e, cv);
     const intY = cv.height * 0.50;
@@ -230,6 +236,7 @@
   }
   function se() { drag = false; }
 
+  // C Ajusta el lienzo y calcula el estado óptico inicial.
   function init() {
     cv.width = cv.parentElement.clientWidth || 460;
     draw(); updCalc();

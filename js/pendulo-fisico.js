@@ -1,21 +1,26 @@
-//Péndulo Físico
+// F Péndulo Físico
 'use strict';
 (function () {
   const cv  = document.getElementById('cv4');
   const ctx = cv.getContext('2d');
 
+  // C Estado editable: longitud de la varilla, masa y ángulo inicial.
   let L = 1, m = 1, th0d = 15;
   let th, om, running = false, raf = null, drag = false, last = null;
 
+  // F Momento de inercia de una varilla respecto al extremo: I = mL²/3.
   const Ifn    = () => m * L * L / 3;
   const d      = () => L / 2;
+  // F La aceleración angular sale del torque gravitacional: α = -(mgd/I) sen(θ).
   const alphafn = t => -(m * GV * d() / Ifn()) * Math.sin(t);
   const om0    = () => Math.sqrt(m * GV * d() / Ifn());
   const Tfn    = () => P2 / om0();
   const scale  = () => Math.min((cv.height - 58) / Math.max(L, .1), 148);
 
+  // C Reinicia la varilla con el ángulo inicial y velocidad angular nula.
   function rst() { th = th0d * Math.PI / 180; om = 0; }
 
+  // C Dibuja varilla, centro de masa, pivote y lecturas en el lienzo.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -23,45 +28,45 @@
     const cmX = pX + S * (L / 2) * Math.sin(th), cmY = pY + S * (L / 2) * Math.cos(th);
     const rW = 10;
 
-    // Arco
+    // C Arco
     ctx.strokeStyle = 'rgba(255,160,0,.15)'; ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(pX, pY, S * L, Math.PI/2 - Math.abs(th0d*Math.PI/180), Math.PI/2 + Math.abs(th0d*Math.PI/180));
     ctx.stroke();
 
-    // Techo
+    // C Soporte superior fijo
     ctx.fillStyle = '#162d47'; ctx.fillRect(pX - 18, 0, 36, pY);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(0, pY); ctx.lineTo(W, pY); ctx.stroke();
     ctx.strokeStyle = '#1a3a5f'; ctx.lineWidth = 1;
     for (let i = -8; i < 38; i += 14) { ctx.beginPath(); ctx.moveTo(pX - 18 + i, pY); ctx.lineTo(pX - 18 + i + 12, pY - 12); ctx.stroke(); }
 
-    // Vertical ref
+    // C Vertical ref
     ctx.strokeStyle = 'rgba(255,160,0,.22)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
     ctx.beginPath(); ctx.moveTo(pX, pY); ctx.lineTo(pX, pY + S * L + 12); ctx.stroke(); ctx.setLineDash([]);
 
-    // Varilla
+    // C Varilla
     ctx.save(); ctx.translate(pX, pY); ctx.rotate(th);
     const rg = ctx.createLinearGradient(-rW / 2, 0, rW / 2, S * L);
     rg.addColorStop(0, '#42a5f5'); rg.addColorStop(1, '#0d47a1');
     ctx.fillStyle = rg; ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.2;
     ctx.beginPath(); ctx.roundRect(-rW / 2, 0, rW, S * L, 3); ctx.fill(); ctx.stroke();
-    // Marca CM
+    // C Marca CM
     ctx.strokeStyle = '#ff9800'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(0, S * L / 2, 5, 0, P2); ctx.stroke();
     ctx.fillStyle = '#ff9800'; ctx.beginPath(); ctx.arc(0, S * L / 2, 2.5, 0, P2); ctx.fill();
     ctx.restore();
 
-    // Pivote
+    // C Pivote
     ctx.fillStyle = '#455a64'; ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(pX, pY, 6, 0, P2); ctx.fill(); ctx.stroke();
 
-    // Label CM
+    // C Etiqueta visual del tipo de elemento óptico CM
     ctx.fillStyle = 'rgba(255,152,0,.8)'; ctx.font = '10px sans-serif';
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText('CM', cmX + 10, cmY);
 
-    // Info
+    // C Texto informativo dentro del lienzo
     ctx.fillStyle = '#ffe082'; ctx.font = '11px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('θ=' + (th * 180 / Math.PI).toFixed(2) + '°', 6, 4);
     ctx.fillText('I=' + Ifn().toFixed(3) + ' kg·m²', 6, 18);
@@ -72,6 +77,7 @@
     document.getElementById('r4T').textContent = Tfn().toFixed(4) + ' s';
   }
 
+  // F Calcula inercia, distancia al centro de masa, período y energía.
   function updCalc() {
     const I = Ifn(), dv = d(), w = om0(), Tv = Tfn();
     document.getElementById('cl4').innerHTML = chHTML([
@@ -84,6 +90,7 @@
     ]);
   }
 
+  // C Integra la ecuación angular con RK4 mientras la simulación corre.
   function step(ts) {
     if (!running) return;
     if (last) {
@@ -93,6 +100,7 @@
     last = ts; draw(); raf = requestAnimationFrame(step);
   }
 
+  // C Ajusta el lienzo y muestra el primer estado calculado.
   function init() { cv.width = cv.parentElement.clientWidth || 460; rst(); draw(); updCalc(); }
 
   document.getElementById('bb4').onclick = () => {

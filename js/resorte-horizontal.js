@@ -1,18 +1,22 @@
-// Masa-Resorte Horizontal
+// F Masa-Resorte Horizontal
 'use strict';
 (function () {
   const cv  = document.getElementById('cv1');
   const ctx = cv.getContext('2d');
   const PPM = 210;
 
+  // C Estado editable: masa, constante elástica, amplitud y tiempo de simulación.
   let m = 1, k = 20, A = .15, t = 0;
   let running = false, raf = null, drag = false, negX = false;
 
+  // F Frecuencia angular del oscilador armónico: ω = √(k/m).
   const om   = () => Math.sqrt(k / m);
+  // F Posición, velocidad y aceleración siguen x(t)=A cos(ωt).
   const xpos = () => A * Math.cos(om() * t) * (negX ? -1 : 1);
   const xvel = () => -A * om() * Math.sin(om() * t) * (negX ? -1 : 1);
   const xacc = () => -A * om() * om() * Math.cos(om() * t) * (negX ? -1 : 1);
 
+  // C Redibuja el lienzo, objeto físico y resultados usando el estado actual.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -20,29 +24,29 @@
     const wX = 26, flY = H - 26, eqX = W * .52, bW = 38, bH = 38;
     const cx = xpos(), bCX = eqX + cx * PPM, bCY = flY - bH / 2;
 
-    // Pared
+    // C Pared fija donde se ancla el resorte
     ctx.fillStyle = '#162d47'; ctx.fillRect(0, 0, wX, flY);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(wX, 0); ctx.lineTo(wX, flY); ctx.stroke();
     ctx.strokeStyle = '#1a3a5f'; ctx.lineWidth = 1;
     for (let i = 0; i < flY; i += 16) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(wX, i + 16); ctx.stroke(); }
 
-    // Piso
+    // C Superficie de apoyo dibujada como referencia visual
     ctx.fillStyle = '#162d47'; ctx.fillRect(0, flY, W, H);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(wX, flY); ctx.lineTo(W, flY); ctx.stroke();
     ctx.strokeStyle = '#1a3a5f'; ctx.lineWidth = 1;
     for (let i = 0; i < W; i += 14) { ctx.beginPath(); ctx.moveTo(i, flY); ctx.lineTo(i + 12, flY + 12); ctx.stroke(); }
 
-    // Línea de equilibrio
+    // F Línea de equilibrio
     ctx.strokeStyle = 'rgba(255,160,0,.4)'; ctx.lineWidth = 1; ctx.setLineDash([5, 5]);
     ctx.beginPath(); ctx.moveTo(eqX, 0); ctx.lineTo(eqX, flY); ctx.stroke(); ctx.setLineDash([]);
 
-    // Resorte
+    // F Resorte
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.8;
     drawSpr(ctx, wX, bCY, bCX - bW / 2, bCY);
 
-    // Bloque
+    // C Bloque
     const g1 = ctx.createLinearGradient(bCX - bW / 2, bCY - bH / 2, bCX + bW / 2, bCY + bH / 2);
     g1.addColorStop(0, '#42a5f5'); g1.addColorStop(1, '#0d47a1');
     ctx.fillStyle = g1; ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.5;
@@ -51,7 +55,7 @@
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('m', bCX, bCY);
 
-    // Flecha de desplazamiento
+    // C Flecha visual que indica dirección o magnitud de desplazamiento
     if (Math.abs(cx) > .004) {
       const ay = bCY - bH / 2 - 10, dir = cx > 0 ? 1 : -1;
       ctx.strokeStyle = '#ffb300'; ctx.fillStyle = '#ffb300'; ctx.lineWidth = 1.5;
@@ -62,16 +66,17 @@
       ctx.fillText('x=' + cx.toFixed(3) + 'm', eqX - (cx > 0 ? 2 : -2), ay);
     }
 
-    // Info
+    // C Texto informativo dentro del lienzo
     ctx.fillStyle = '#4fc3f7'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('k=' + k + ' N/m, m=' + m + ' kg', wX + 4, 4);
 
-    // Readouts
+    // C Salidas numéricas mostradas en el panel de resultados
     document.getElementById('r1x').textContent = cx.toFixed(4) + ' m';
     document.getElementById('r1v').textContent = xvel().toFixed(4) + ' m/s';
     document.getElementById('r1a').textContent = xacc().toFixed(4) + ' m/s²';
   }
 
+  // F Actualiza fórmulas derivadas: período, frecuencia, energía y elongación.
   function updCalc() {
     const w = om(), T = P2 / w, f = w / P2, E = .5 * k * A * A;
     document.getElementById('cl1').innerHTML = chHTML([
@@ -84,8 +89,10 @@
     ]);
   }
 
+  // C Bucle de animación: avanza el tiempo y solicita el siguiente cuadro.
   function loop() { if (!running) return; t += .016; draw(); raf = requestAnimationFrame(loop); }
 
+  // C Inicializa tamaño del lienzo y valores de calculadora al cargar.
   function init() {
     cv.width = cv.parentElement.clientWidth || 460;
     draw(); updCalc();
@@ -105,7 +112,7 @@
   document.getElementById('s1k').oninput = e => { k = +e.target.value; document.getElementById('d1k').textContent = k + ' N/m'; t = 0; draw(); updCalc(); };
   document.getElementById('s1A').oninput = e => { A = +e.target.value; document.getElementById('d1A').textContent = A.toFixed(2) + ' m'; t = 0; draw(); updCalc(); };
 
-  // Drag
+  // C Arrastre del usuario para modificar el estado inicial
   function sd(e) {
     const p = gpos(e, cv), bCX = cv.width * .52 + xpos() * PPM, bCY = cv.height - 26 - 19;
     if (Math.abs(p.x - bCX) < 26 && Math.abs(p.y - bCY) < 26) {

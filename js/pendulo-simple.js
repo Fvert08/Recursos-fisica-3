@@ -1,17 +1,21 @@
-//Péndulo Simple
+// F Péndulo Simple
 'use strict';
 (function () {
   const cv  = document.getElementById('cv3');
   const ctx = cv.getContext('2d');
 
+  // C Estado editable: longitud, masa y ángulo inicial en grados.
   let L = 1, m = 1, th0d = 15;
   let th, om, running = false, raf = null, drag = false, last = null;
 
+  // F Para ángulos pequeños, ω₀ = √(g/L) aproxima el período del péndulo simple.
   const om0   = () => Math.sqrt(GV / L);
   const scale = () => Math.min((cv.height - 58) / Math.max(L, .1), 155);
 
+  // C Reinicia el péndulo con el ángulo inicial y velocidad angular cero.
   function rst() { th = th0d * Math.PI / 180; om = 0; }
 
+  // C Dibuja soporte, cuerda, masa y datos de movimiento en el lienzo.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -19,38 +23,38 @@
     const bX = pX + S * L * Math.sin(th), bY = pY + S * L * Math.cos(th);
     const bobR = Math.max(7, Math.min(14, 5 + m * 1.5));
 
-    // Arco de amplitud
+    // F Arco de amplitud
     ctx.strokeStyle = 'rgba(255,160,0,.18)'; ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(pX, pY, S * L, Math.PI/2 - Math.abs(th0d*Math.PI/180), Math.PI/2 + Math.abs(th0d*Math.PI/180));
     ctx.stroke();
 
-    // Techo
+    // C Soporte superior fijo
     ctx.fillStyle = '#162d47'; ctx.fillRect(pX - 16, 0, 32, pY);
     ctx.strokeStyle = '#2196f3'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(0, pY); ctx.lineTo(W, pY); ctx.stroke();
     ctx.strokeStyle = '#1a3a5f'; ctx.lineWidth = 1;
     for (let i = -8; i < 34; i += 14) { ctx.beginPath(); ctx.moveTo(pX - 16 + i, pY); ctx.lineTo(pX - 16 + i + 12, pY - 12); ctx.stroke(); }
 
-    // Vertical de referencia
+    // C Vertical de referencia
     ctx.strokeStyle = 'rgba(255,160,0,.25)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
     ctx.beginPath(); ctx.moveTo(pX, pY); ctx.lineTo(pX, pY + S * L + 12); ctx.stroke(); ctx.setLineDash([]);
 
-    // Hilo
+    // C Hilo
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.6;
     ctx.beginPath(); ctx.moveTo(pX, pY); ctx.lineTo(bX, bY); ctx.stroke();
 
-    // Pivote
+    // C Pivote
     ctx.fillStyle = '#455a64'; ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(pX, pY, 5, 0, P2); ctx.fill(); ctx.stroke();
 
-    // Bob
+    // C Masa del péndulo dibujada en el extremo
     const bg = ctx.createRadialGradient(bX - 3, bY - 3, 1, bX, bY, bobR);
     bg.addColorStop(0, '#ffb74d'); bg.addColorStop(1, '#e65100');
     ctx.fillStyle = bg; ctx.strokeStyle = '#ffcc02'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(bX, bY, bobR, 0, P2); ctx.fill(); ctx.stroke();
 
-    // Info
+    // C Texto informativo dentro del lienzo
     ctx.fillStyle = '#ffe082'; ctx.font = '11px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('θ=' + (th * 180 / Math.PI).toFixed(2) + '°', 6, 4);
     ctx.fillText('L=' + L.toFixed(2) + 'm  m=' + m.toFixed(1) + 'kg', 6, 18);
@@ -60,6 +64,7 @@
     document.getElementById('r3v').textContent = (Math.abs(om) * L).toFixed(4) + ' m/s';
   }
 
+  // F Actualiza período, frecuencia angular y energía para el ángulo actual.
   function updCalc() {
     const w = om0(), T = P2 / w, th0r = th0d * Math.PI / 180, vm = th0r * Math.sqrt(GV * L);
     document.getElementById('cl3').innerHTML = chHTML([
@@ -71,6 +76,7 @@
     ]);
   }
 
+  // C Integra el movimiento con RK4 y redibuja cada cuadro animado.
   function step(ts) {
     if (!running) return;
     if (last) {
@@ -80,6 +86,7 @@
     last = ts; draw(); raf = requestAnimationFrame(step);
   }
 
+  // C Prepara el estado inicial y ajusta la resolución del lienzo.
   function init() { cv.width = cv.parentElement.clientWidth || 460; rst(); draw(); updCalc(); }
 
   document.getElementById('bb3').onclick = () => {

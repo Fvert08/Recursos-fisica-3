@@ -1,16 +1,18 @@
-// Espejos Esféricos (Cóncavo y Convexo)
+// F Espejos esféricos: usa la ecuación 1/f = 1/d₀ + 1/dᵢ. (Cóncavo y Convexo)
 'use strict';
 (function () {
   const cv  = document.getElementById('cv2');
   const ctx = cv.getContext('2d');
 
-  let f = 1.2, d0 = 2.5, h0 = 0.5, tipo = 1; // tipo: 1=cóncavo, -1=convexo
+  // C Estado editable: foco, distancia del objeto, altura y tipo de espejo.
+  let f = 1.2, d0 = 2.5, h0 = 0.5, tipo = 1; // C tipo: 1=cóncavo, -1=convexo
 
+  // C Dibujo simplificado conservado como respaldo visual.
   function drawLegacy() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
 
-    // signo focal según tipo
+    // F signo focal según tipo
     const fs = tipo * Math.abs(f);
     const di_inv = 1/fs - 1/d0;
     const di = (Math.abs(di_inv) < 1e-9) ? Infinity : 1 / di_inv;
@@ -19,28 +21,28 @@
 
     const midX = W * 0.55;
     const axisY = H * 0.50;
-    const sc = Math.min((W * 0.44) / 4.0, 55); // px por metro
+    const sc = Math.min((W * 0.44) / 4.0, 55); // C píxeles por metro
 
-    // Eje óptico
+    // C Eje óptico
     ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1; ctx.setLineDash([6,4]);
     ctx.beginPath(); ctx.moveTo(10, axisY); ctx.lineTo(W - 10, axisY); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Espejo esférico (arco)
+    // F Espejo esférico (arco)
     const R = 2 * Math.abs(fs);
     const arcH = Math.min(H * 0.7, 120);
     ctx.strokeStyle = '#90caf9'; ctx.lineWidth = 3;
     ctx.beginPath();
     if (tipo === 1) {
-      // Cóncavo: concavidad hacia izquierda (objeto)
+      // F Cóncavo: concavidad hacia izquierda (objeto)
       ctx.arc(midX + R * sc, axisY, R * sc, Math.PI * 0.72, Math.PI * 1.28);
     } else {
-      // Convexo: concavidad hacia derecha
+      // C Convexo: concavidad hacia derecha
       ctx.arc(midX - R * sc, axisY, R * sc, -Math.PI * 0.28, Math.PI * 0.28);
     }
     ctx.stroke();
 
-    // Centro C y Foco F
+    // F Centro C y Foco F
     const fX = midX - fs * sc;
     const cX = midX - 2 * fs * sc;
 
@@ -53,39 +55,39 @@
     ctx.fillText('F', fX, axisY + 4);
     ctx.fillText('C', cX, axisY + 4);
 
-    // Objeto
+    // F Objeto
     const objX = midX - d0 * sc;
     const objTopY = axisY - h0 * sc * 3.5;
     ctx.strokeStyle = '#ffb300'; ctx.fillStyle = '#ffb300'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(objX, axisY); ctx.lineTo(objX, objTopY); ctx.stroke();
-    // Flecha
+    // C Flecha visual que indica dirección o magnitud
     ctx.beginPath(); ctx.moveTo(objX, objTopY); ctx.lineTo(objX - 5, objTopY + 10); ctx.lineTo(objX + 5, objTopY + 10); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#ffe082'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText('O', objX + 6, objTopY);
 
-    // Rayos (3 rayos canónicos)
+    // F Rayos (3 rayos canónicos)
     if (isFinite(di) && Math.abs(di) < 20) {
       const imgX = midX - di * sc;
       const imgTopY = axisY - hi * sc * 3.5;
 
-      // Rayo 1: paralelo al eje → pasa por F (o parece venir de F para convexo)
+      // F Rayo 1: paralelo al eje → pasa por F (o parece venir de F para convexo)
       ctx.strokeStyle = '#69f0ae'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(objX, objTopY); ctx.lineTo(midX, objTopY); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(midX, objTopY); ctx.lineTo(imgX, imgTopY); ctx.stroke();
-      // Extensión punteada si imagen virtual
+      // F Extensión punteada si imagen virtual
       if (di < 0 || tipo === -1) {
         ctx.setLineDash([4,3]); ctx.globalAlpha = 0.45;
         ctx.beginPath(); ctx.moveTo(midX, objTopY); ctx.lineTo(imgX - (imgX < midX ? -40 : 40), imgTopY + (imgTopY - axisY) * 0.5); ctx.stroke();
         ctx.setLineDash([]); ctx.globalAlpha = 1;
       }
 
-      // Rayo 2: pasa por el centro del espejo
+      // F Rayo 2: pasa por el centro del espejo
       ctx.strokeStyle = '#ff80ab'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(objX, objTopY); ctx.lineTo(midX, 0); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(midX, 0); ctx.lineTo(imgX, imgTopY); ctx.stroke();
 
-      // Imagen
+      // F Imagen
       const isVirtual = di < 0;
       ctx.globalAlpha = isVirtual ? 0.45 : 1.0;
       ctx.strokeStyle = isVirtual ? '#80cbc4' : '#40c4ff';
@@ -98,7 +100,7 @@
       ctx.textBaseline = 'middle';
       ctx.fillText('I', imgX - 6, imgTopY);
 
-      // Distancia imagen
+      // F Distancia imagen
       ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
       ctx.beginPath(); ctx.moveTo(midX, axisY + 20); ctx.lineTo(imgX, axisY + 20); ctx.stroke();
       ctx.setLineDash([]);
@@ -106,18 +108,18 @@
       ctx.fillText('dᵢ=' + di.toFixed(2) + 'm', (midX + imgX) / 2, axisY + 18);
     }
 
-    // Distancia objeto
+    // F Distancia objeto
     ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1; ctx.setLineDash([2,4]);
     ctx.beginPath(); ctx.moveTo(objX, axisY + 32); ctx.lineTo(midX, axisY + 32); ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#ffcc80'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
     ctx.fillText('d₀=' + d0.toFixed(2) + 'm', (objX + midX) / 2, axisY + 30);
 
-    // Label tipo espejo
+    // F Etiqueta visual del tipo de espejo
     ctx.fillStyle = '#90caf9'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText(tipo === 1 ? '⟵ Cóncavo  f=' + fs.toFixed(2) + 'm' : '⟵ Convexo  f='+fs.toFixed(2)+'m', 6, 4);
 
-    // Readouts
+    // C Salidas numéricas mostradas en el panel de resultados
     const diStr = isFinite(di) ? di.toFixed(3) + ' m' : '∞';
     const mStr  = isFinite(di) ? m_lat.toFixed(3) : '—';
     document.getElementById('r2di').textContent = diStr;
@@ -125,6 +127,7 @@
     document.getElementById('r2tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
   }
 
+  // C Redibuja eje óptico, espejo, rayos canónicos e imagen resultante.
   function draw() {
     const W = cv.width, H = cv.height;
     bgd(ctx, W, H);
@@ -275,6 +278,7 @@
     document.getElementById('r2tp').textContent = isFinite(di) ? (di < 0 ? 'Virtual' : 'Real') : '—';
   }
 
+  // F Calcula distancia imagen, aumento lateral y orientación.
   function updCalc() {
     const fs = tipo * Math.abs(f);
     const di_inv = 1/fs - 1/d0;
@@ -291,6 +295,7 @@
     ]);
   }
 
+  // C Ajusta el lienzo y prepara lecturas iniciales.
   function init() {
     cv.width = cv.parentElement.clientWidth || 460;
     draw(); updCalc();
